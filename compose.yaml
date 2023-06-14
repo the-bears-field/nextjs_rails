@@ -25,7 +25,7 @@ services:
     expose:
       - "3001"
     networks:
-      - private
+      - public
 
   db:
     container_name: db
