@@ -42,7 +42,7 @@ services:
     volumes:
       - ./docker/db/data:/var/lib/postgresql/data
     networks:
-      - private
+      - public
     expose:
       - "5432"
 
