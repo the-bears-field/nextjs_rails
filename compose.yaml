@@ -26,6 +26,8 @@ services:
       - "3001"
     networks:
       - public
+    depends_on:
+      - db
 
   db:
     container_name: db
