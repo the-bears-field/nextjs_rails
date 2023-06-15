@@ -31,7 +31,7 @@ services:
     container_name: db
     build:
       context: .
-      dockerfile: docker/backend/Dockerfile
+      dockerfile: docker/db/Dockerfile
     environment:
       - POSTGRES_DATABASE=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
