@@ -54,8 +54,8 @@ services:
   pgadmin:
     image: dpage/pgadmin4:latest
     restart: always
-    ports:
-      - 8888:80
+    expose:
+      - "8888"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
