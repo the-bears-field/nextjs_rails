@@ -1,9 +1,9 @@
 class Post < ApplicationRecord
-  has_many :user_post
-  has_many :user, through: :user_post
-  has_many :post_tag
-  has_many :tag, through: :post_tag
-  has_many :post_comment
-  has_many :comment, through: :post_comment
+  has_many :user_posts
+  has_many :users, through: :user_posts
+  has_many :post_tags
+  has_many :tags, through: :post_tags
+  has_many :post_comments
+  has_many :comments, through: :post_comments
   validates :title, :description, presence: true
 end
