@@ -6,7 +6,7 @@ RSpec.describe User, type: :model do
     user = User.new(
       name: 'John Doe',
       email: 'test@example.com',
-      password_digest: 'password'
+      password: 'password'
     )
     expect(user).to be_valid
   end
@@ -16,7 +16,7 @@ RSpec.describe User, type: :model do
     user = User.new(
       name: nil,
       email: 'test@example.com',
-      password_digest: 'password'
+      password: 'password'
     )
     user.valid?
     expect(user.errors[:name]).to include("can't be blank")
@@ -27,7 +27,7 @@ RSpec.describe User, type: :model do
     user = User.new(
       name: 'John Doe',
       email: nil,
-      password_digest: 'password'
+      password: 'password'
     )
     user.valid?
     expect(user.errors[:email]).to include("can't be blank")
@@ -38,13 +38,13 @@ RSpec.describe User, type: :model do
     User.create(
       name: 'John Doe',
       email: 'test@example.com',
-      password_digest: 'password'
+      password: 'password'
     )
 
     user = User.new(
       name: 'John Doe',
       email: 'test@example.com',
-      password_digest: 'password'
+      password: 'password'
     )
 
     user.valid?
