@@ -27,4 +27,11 @@ RSpec.describe User, type: :model do
     user.valid?
     expect(user.errors[:email]).to include("has already been taken")
   end
+
+  # 複数のユーザーで何かする
+  it "does something with multiple users" do
+    user1 = FactoryBot.create(:user)
+    user2 = FactoryBot.create(:user)
+    expect(true).to eq(true)
+  end
 end
