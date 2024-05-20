@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :post do
-    sequence(:title) { |n| "title-#{n}" }
-    sequence(:description) { |n| "description-#{n}" }
+    title { Faker::Lorem.unique.sentence }
+    description { Faker::Lorem.unique.paragraph(sentence_count: 10) }
   end
 end
