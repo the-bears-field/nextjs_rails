@@ -10,20 +10,20 @@ RSpec.describe User, type: :model do
   it "ユーザー名がなければ無効な状態であること" do
     user.name = nil
     user.valid?
-    expect(user.errors[:name]).to include("can't be blank")
+    expect(user.errors.of_kind?(:name, :blank)).to be_truthy
   end
 
   it "メールアドレスがなければ無効な状態であること" do
     user.email = nil
     user.valid?
-    expect(user.errors[:email]).to include("can't be blank")
+    expect(user.errors.of_kind?(:email, :blank)).to be_truthy
   end
 
   it "重複したメールアドレスなら無効な状態であること" do
     FactoryBot.create(:user, email: 'aaa@example.com')
     user = FactoryBot.build(:user, email: 'aaa@example.com')
     user.valid?
-    expect(user.errors[:email]).to include("has already been taken")
+    expect(user.errors.of_kind?(:email, :taken)).to be_truthy
   end
 
   it "複数のユーザーで何かする" do
