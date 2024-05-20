@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :tag do
-    sequence(:name) { |n| "tag#{n}" }
+    name { Faker::Lorem.unique.word }
   end
 end
