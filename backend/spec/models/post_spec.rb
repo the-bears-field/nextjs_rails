@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  let(:post) { FactoryBot.create(:post) }
+  let(:post) { FactoryBot.build(:post) }
 
   it "記事作成が正常に可能なファクトリであること" do
     expect(post).to be_valid
