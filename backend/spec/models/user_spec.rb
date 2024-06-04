@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { FactoryBot.build(:user) }
   let(:user_with_posts) { FactoryBot.create(:user, :with_posts) }
   let(:user_with_posts_and_tags) { FactoryBot.create(:user, :with_posts_and_tags) }
 
@@ -29,8 +29,8 @@ RSpec.describe User, type: :model do
   end
 
   it "複数のユーザーで何かする" do
-    user1 = FactoryBot.create(:user)
-    user2 = FactoryBot.create(:user)
+    user1 = FactoryBot.build(:user)
+    user2 = FactoryBot.build(:user)
     expect(true).to eq(true)
   end
 
