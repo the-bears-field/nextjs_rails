@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   let(:user) { FactoryBot.create(:user) }
+  let(:user_with_posts) { FactoryBot.create(:user, :with_posts) }
+  let(:user_with_posts_and_tags) { FactoryBot.create(:user, :with_posts_and_tags) }
 
   it "ユーザー名、メール、パスワードが有効なファクトリを持つこと" do
     expect(user).to be_valid
@@ -30,5 +32,20 @@ RSpec.describe User, type: :model do
     user1 = FactoryBot.create(:user)
     user2 = FactoryBot.create(:user)
     expect(true).to eq(true)
+  end
+
+  context ':with_posts' do
+    it 'ユーザーと紐づいた投稿が3つ作成されている' do
+      expect(user_with_posts.posts.size).to eq(3)
+    end
+  end
+
+  context ':with_posts_and_tags' do
+    it 'ユーザーと紐づいた投稿が3つ作成、かつ各々の投稿に10個タグ付けされている' do
+      expect(user_with_posts_and_tags.posts.size).to eq(3)
+      user_with_posts_and_tags.posts.each do |post|
+        expect(post.tags.size).to eq(10)
+      end
+    end
   end
 end
