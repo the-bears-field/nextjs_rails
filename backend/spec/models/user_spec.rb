@@ -11,6 +11,11 @@ RSpec.describe User, type: :model do
         expect(user).to be_valid
       end
 
+      it "メールアドレスの書式である場合、有効な状態であること" do
+        user.email = "example@example.co.jp"
+        expect(user).to be_valid
+      end
+
       it "複数のユーザーで何かする" do
         user1 = FactoryBot.build(:user)
         user2 = FactoryBot.build(:user)
@@ -60,6 +65,11 @@ RSpec.describe User, type: :model do
         user.email = ""
         user.valid?
         expect(user.errors.of_kind?(:email, :blank)).to be_truthy
+      end
+
+      it "メールアドレスの書式ではない場合、無効な状態であること" do
+        user.email = "example"
+        expect(user).to be_invalid
       end
 
       it "重複したメールアドレスなら無効な状態であること" do
