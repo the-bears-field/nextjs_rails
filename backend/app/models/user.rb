@@ -6,5 +6,5 @@ class User < ApplicationRecord
   has_many :user_comments, dependent: :destroy
   has_many :comments, through: :user_comments
   validates :name, :email, :password_digest, presence: true
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true, format: URI::MailTo::EMAIL_REGEXP
 end
