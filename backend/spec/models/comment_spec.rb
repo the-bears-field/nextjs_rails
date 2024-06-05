@@ -1,16 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  # コメントの文章が有効な状態であること
-  it "is valid with a comment description" do
-    comment = Comment.new(description: 'description')
-    expect(comment).to be_valid
+  let(:comment) { FactoryBot.build(:comment) }
+
+  describe "コメントの新規投稿" do
+    describe "新規投稿が可能である" do
+      it "コメントの文章が有効な状態であること" do
+        expect(comment).to be_valid
+      end
+    end
+
+    describe "新規投稿が不可能である" do
+      context "description 文章" do
+        it "nilの場合、無効な状態であること" do
+          comment.description = nil
+          comment.valid?
+          expect(comment.errors.of_kind?(:description, :blank)).to be_truthy
+        end
+
+        it "空文字の場合、無効な状態であること" do
+          comment.description = ""
+          comment.valid?
+          expect(comment.errors.of_kind?(:description, :blank)).to be_truthy
+        end
+      end
+    end
   end
 
-  # コメントの文章がなければ無効な状態であること
-  it "is valid without a tag name" do
-    comment = Comment.new(description: nil)
-    comment.valid?
-    expect(comment.errors[:description]).to include("can't be blank")
-  end
 end
