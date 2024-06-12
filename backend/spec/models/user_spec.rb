@@ -11,9 +11,24 @@ RSpec.describe User, type: :model do
         expect(user).to be_valid
       end
 
-      it "メールアドレスの書式である場合、有効な状態であること" do
-        user.email = "example@example.co.jp"
-        expect(user).to be_valid
+      context "email メール, normalized_email 正規化したメール" do
+        it "メールアドレスの書式である場合、有効な状態であること" do
+          user.email = "example@example.co.jp"
+          user.valid?
+          expect(user).to be_valid
+        end
+
+        it "Gmailでの登録で、検証を経て正規化されたメールアドレスが有効な状態であること" do
+          user.email = "ex.amp.le+test@gmail.com"
+          user.valid?
+          expect(user.normalized_email).to eq("example@gmail.com")
+        end
+
+        it "Googlemailの登録で、検証を経て正規化されたメールアドレスが有効な状態であること" do
+          user.email = "ex.amp.le+test@googlemail.com"
+          user.valid?
+          expect(user.normalized_email).to eq("example@googlemail.com")
+        end
       end
 
       it "複数のユーザーで何かする" do
@@ -73,10 +88,24 @@ RSpec.describe User, type: :model do
       end
 
       it "重複したメールアドレスなら無効な状態であること" do
-        FactoryBot.create(:user, email: 'aaa@example.com')
-        user = FactoryBot.build(:user, email: 'aaa@example.com')
+        FactoryBot.create(:user, email: "aaa@example.com")
+        user.email = "aaa@example.com"
         user.valid?
         expect(user.errors.of_kind?(:email, :taken)).to be_truthy
+      end
+
+      it "エイリアスを含むGmailでの登録で、ユーザー名とドメインが一致した場合は無効" do
+        FactoryBot.create(:user, email: "example@gmail.com")
+        user.email = "example+test@gmail.com"
+        user.valid?
+        expect(user.errors.of_kind?(:normalized_email, :taken)).to be_truthy
+      end
+
+      it "Googlemailでの登録で、Gmailに同じユーザー名が登録済だった場合は無効" do
+        FactoryBot.create(:user, email: "example@gmail.com")
+        user.email = "example@googlemail.com"
+        user.valid?
+        expect(user.errors.of_kind?(:normalized_email, :taken)).to be_truthy
       end
     end
 
