@@ -115,6 +115,24 @@ RSpec.describe User, type: :model do
         user.valid?
         expect(user.errors.of_kind?(:password, :too_short)).to be_truthy
       end
+
+      it "パスワードに数字が含まれていない場合は無効" do
+        user.password = "TestTest"
+        user.valid?
+        expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
+      end
+
+      it "パスワードに半角大文字が含まれていない場合は無効" do
+        user.password = "test1234"
+        user.valid?
+        expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
+      end
+
+      it "パスワードに半角小文字が含まれていない場合は無効" do
+        user.password = "TEST1234"
+        user.valid?
+        expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
+      end
     end
   end
 end

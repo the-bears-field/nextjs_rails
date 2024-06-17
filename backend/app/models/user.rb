@@ -1,13 +1,19 @@
 class User < ApplicationRecord
   has_secure_password
 
+  # 半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上100文字以下の正規表現
+  PASSWORD_REGEXP = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,100}+\z/
+
   has_many :user_posts, dependent: :destroy
   has_many :posts, through: :user_posts
   has_many :user_comments, dependent: :destroy
   has_many :comments, through: :user_comments
   validates :name, :email, :normalized_email, :password_digest, presence: true
   validates :email, :normalized_email, uniqueness: true, format: URI::MailTo::EMAIL_REGEXP
-  validates :password, length: { minimum: 8 }, if: -> { new_record? || !password.blank? }
+  validates :password,
+    length: { minimum: 8 },
+    format: { with: PASSWORD_REGEXP },
+    if: -> { new_record? || !password.blank? }
 
   before_validation :set_normalized_email
 
