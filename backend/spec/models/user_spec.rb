@@ -109,5 +109,12 @@ RSpec.describe User, type: :model do
       end
     end
 
+    context "password パスワード" do
+      it "パスワードが8文字未満の場合は無効" do
+        user.password = "test"
+        user.valid?
+        expect(user.errors.of_kind?(:password, :too_short)).to be_truthy
+      end
+    end
   end
 end
