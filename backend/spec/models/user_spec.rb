@@ -11,6 +11,14 @@ RSpec.describe User, type: :model do
         expect(user).to be_valid
       end
 
+      context "name 名前" do
+        it "名前の先頭と末尾にスペースが存在しても、除去した上で有効な状態であること" do
+          user.name = "   example test     "
+          user.valid?
+          expect(user.name).to eq("example test")
+        end
+      end
+
       context "email メール, normalized_email 正規化したメール" do
         it "メールアドレスの書式である場合、有効な状態であること" do
           user.email = "example@example.co.jp"

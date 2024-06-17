@@ -15,11 +15,19 @@ class User < ApplicationRecord
     format: { with: PASSWORD_REGEXP },
     if: -> { new_record? || !password.blank? }
 
-  before_validation :set_normalized_email
+  before_validation :set_trimmed_name, :set_normalized_email
 
   validate :verify_normalized_email, if: :normalized_email_changed?
 
   private
+
+  # 名前の先頭と末尾のスペースを除去
+  #
+  # @return [nil]
+  def set_trimmed_name
+    return unless name
+    self.name = name.lstrip.rstrip
+  end
 
   # Userモデルのnormalized_email属性に
   # 正規化したメールアドレスを定義するセッター関数
