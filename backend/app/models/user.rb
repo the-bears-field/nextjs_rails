@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :comments, through: :user_comments
   validates :name, :email, :normalized_email, :password_digest, presence: true
   validates :email, :normalized_email, uniqueness: true, format: URI::MailTo::EMAIL_REGEXP
+  validates :password, length: { minimum: 8 }, if: -> { new_record? || !password.blank? }
 
   before_validation :set_normalized_email
 
