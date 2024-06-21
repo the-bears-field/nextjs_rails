@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_secure_password
 
   # 半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上100文字以下の正規表現
-  PASSWORD_REGEXP = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,100}+\z/
+  PASSWORD_REGEXP = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,100}+\z/.freeze
 
   has_many :user_posts, dependent: :destroy
   has_many :posts, through: :user_posts
@@ -15,18 +15,18 @@ class User < ApplicationRecord
     format: { with: PASSWORD_REGEXP },
     if: -> { new_record? || !password.blank? }
 
-  before_validation :set_trimmed_name, :set_normalized_email
+  before_validation :set_sanitized_name, :set_normalized_email
 
   validate :verify_normalized_email, if: :normalized_email_changed?
 
   private
 
-  # 名前の先頭と末尾のスペースを除去
+  # トリミングとエスケープをした文字列を、
+  # name属性に定義するセッター関数
   #
   # @return [nil]
-  def set_trimmed_name
-    return unless name
-    self.name = name.lstrip.rstrip
+  def set_sanitized_name
+    self.name = sanitize_string_attribute(:name)
   end
 
   # Userモデルのnormalized_email属性に
@@ -48,7 +48,7 @@ class User < ApplicationRecord
 
   # Gmailアドレスのエイリアスとピリオドを削除したメールアドレスを返す関数
   #
-  # @param [String] 正規化前のGmailアドレス
+  # @param email_address [String] 正規化前のGmailアドレス
   # @return [String] 正規化後のGmailアドレス
   def normalize_gmail(email_address)
     local, domain = email_address.downcase.split('@')

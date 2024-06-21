@@ -8,6 +8,34 @@ RSpec.describe Post, type: :model do
       it "記事作成が正常に可能であること" do
         expect(post).to be_valid
       end
+
+      context "title タイトル" do
+        it "先頭と末尾にスペースが存在しても、除去した上で有効な状態であること" do
+          post.title = "   test   "
+          post.valid?
+          expect(post.title).to eq("test")
+        end
+
+        it "scriptタグを入力した場合、エスケープされた状態であること" do
+          post.title = "<script>alert('test');</script>"
+          post.valid?
+          expect(post.title).to_not eq("<script>alert('test');</script>")
+        end
+      end
+
+      context "description 文章" do
+        it "先頭と末尾にスペースが存在しても、除去した上で有効な状態であること" do
+          post.title = "   test test test\ntest test test\ntest   "
+          post.valid?
+          expect(post.title).to eq("test test test\ntest test test\ntest")
+        end
+
+        it "scriptタグを入力した場合、エスケープされた状態であること" do
+          post.title = "<script>alert('hello');</script>"
+          post.valid?
+          expect(post.title).to_not eq("<script>alert('hello');</script>")
+        end
+      end
     end
 
     describe "新規投稿が不可能である" do
