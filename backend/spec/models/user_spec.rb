@@ -17,6 +17,12 @@ RSpec.describe User, type: :model do
           user.valid?
           expect(user.name).to eq("example test")
         end
+
+        it "scriptタグを入力した場合、エスケープされた状態であること" do
+          user.name = "<script>alert('Hello');</script>"
+          user.valid?
+          expect(user.name).to_not eq("<script>alert('Hello');</script>")
+        end
       end
 
       context "email メール, normalized_email 正規化したメール" do
@@ -92,6 +98,13 @@ RSpec.describe User, type: :model do
 
       it "メールアドレスの書式ではない場合、無効な状態であること" do
         user.email = "example"
+        user.valid?
+        expect(user).to be_invalid
+      end
+
+      it "正規表現での定義外の文字列が含まれていた場合、無効な状態であること" do
+        user.email = "<script>alert('test');</script>@example.com"
+        user.valid?
         expect(user).to be_invalid
       end
 

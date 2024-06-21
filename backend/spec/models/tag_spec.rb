@@ -5,8 +5,22 @@ RSpec.describe Tag, type: :model do
 
   describe "タグの新規投稿" do
     describe "新規投稿が可能である" do
-      it "タグ名が有効な状態であること" do
-        expect(tag).to be_valid
+      context "name 名前" do
+        it "タグ名が有効な状態であること" do
+          expect(tag).to be_valid
+        end
+
+        it "先頭と末尾にスペースが存在しても、除去した上で有効な状態であること" do
+          tag.name = "   test   "
+          tag.valid?
+          expect(tag.name).to eq("test")
+        end
+
+        it "scriptタグを入力した場合、エスケープされた状態であること" do
+          tag.name = "<script>alert('test');</script>"
+          tag.valid?
+          expect(tag.name).to_not eq("<script>alert('test');</script>")
+        end
       end
     end
 
