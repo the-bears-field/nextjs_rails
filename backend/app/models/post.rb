@@ -5,6 +5,7 @@ class Post < ApplicationRecord
   has_many :tags, through: :post_tags
   has_many :post_comments, dependent: :destroy
   has_many :comments, through: :post_comments
+
   validates :title, :description, presence: true
 
   before_validation :set_sanitized_attributes
