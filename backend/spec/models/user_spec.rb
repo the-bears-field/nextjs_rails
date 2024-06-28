@@ -7,8 +7,30 @@ RSpec.describe User, type: :model do
 
   describe "ユーザーの新規登録" do
     describe "新規登録が可能である" do
-      it "ユーザー名、メール、パスワードが有効なファクトリを持つこと" do
+      it "ユーザー名、ユーザーID、メール、パスワードが有効なファクトリを持つこと" do
         expect(user).to be_valid
+      end
+
+      context "user_id ユーザーID" do
+        it "定められた書式である場合、有効な状態であること" do
+          user.user_id = "__Example1234__"
+          user.valid?
+          expect(user).to be_valid
+        end
+      end
+
+      context "biography プロフィール文" do
+        it "scriptタグを入力した場合、エスケープされた状態であること" do
+          user.biography = "<script>alert('Hello');</script>"
+          user.valid?
+          expect(user.biography).to_not eq("<script>alert('Hello');</script>")
+        end
+
+        it "nilを代入した場合、空文字に代替された状態であること" do
+          user.biography = nil
+          user.valid?
+          expect(user.biography).to eq("")
+        end
       end
 
       context "name 名前" do
@@ -69,6 +91,38 @@ RSpec.describe User, type: :model do
   end
 
   describe "新規登録が不可能である" do
+    context "user_id ユーザーID" do
+      it "nilの場合、無効な状態であること" do
+        user.user_id = nil
+        user.valid?
+        expect(user.errors.of_kind?(:user_id, :blank)).to be_truthy
+      end
+
+      it "空文字の場合、無効な状態であること" do
+        user.user_id = ""
+        user.valid?
+        expect(user.errors.of_kind?(:user_id, :blank)).to be_truthy
+      end
+
+      it "定められた書式ではない場合、無効な状態であること" do
+        user.user_id = "!@#$%^&*()-="
+        user.valid?
+        expect(user).to be_invalid
+      end
+
+      it "4文字未満の場合、無効な状態であること" do
+        user.user_id = "x"
+        user.valid?
+        expect(user).to be_invalid
+      end
+
+      it "16文字以上の場合、無効な状態であること" do
+        user.user_id = "__Example12345678__"
+        user.valid?
+        expect(user).to be_invalid
+      end
+    end
+
     context "name 名前" do
       it "nilの場合、無効な状態であること" do
         user.name = nil
