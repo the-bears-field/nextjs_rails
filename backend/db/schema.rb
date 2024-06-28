@@ -71,7 +71,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_104130) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "user_id", null: false
     t.string "name", null: false
+    t.text "biography", null: false
     t.string "email", null: false
     t.string "normalized_email", null: false
     t.string "password_digest", null: false
@@ -79,6 +81,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_104130) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["normalized_email"], name: "index_users_on_normalized_email", unique: true
+    t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end
 
   add_foreign_key "post_comments", "comments"

@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :user do
+    user_id { Faker::Internet.username(specifier: 4..15, separators: %w(_)) }
     name { Faker::Internet.unique.username }
     email { Faker::Internet.unique.email(domain: 'example.com') }
     password { 'Password1234' }

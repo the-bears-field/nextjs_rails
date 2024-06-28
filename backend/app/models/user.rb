@@ -9,6 +9,15 @@ class User < ApplicationRecord
   # 半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上100文字以下の正規表現
   PASSWORD_REGEXP = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,100}+\z/.freeze
 
+  # 半角英小文字大文字数字および半角アンダーバーいずれかを含む
+  # 4文字以上15文字以下の正規表現
+  USER_ID_REGEXP = /\A^[a-zA-Z0-9_]{4,15}$\z/.freeze
+
+  validates :user_id,
+    presence: true,
+    length: { in: 4..15 },
+    uniqueness: true,
+    format: USER_ID_REGEXP
   validates :name, :password_digest, presence: true
   validates :email, :normalized_email,
     presence: true,
@@ -22,16 +31,17 @@ class User < ApplicationRecord
 
   validate :verify_normalized_email, if: :normalized_email_changed?
 
-  before_validation :set_sanitized_name, :set_normalized_email
+  before_validation :set_sanitized_attributes, :set_normalized_email
 
   private
 
   # トリミングとエスケープをした文字列を
-  # name属性に定義するセッター関数
+  # 各属性に定義するセッター関数
   #
   # @return [nil]
-  def set_sanitized_name
+  def set_sanitized_attributes
     self.name = sanitize_string_attribute(:name)
+    self.biography = biography.nil? ? "" : sanitize_string_attribute(:biography)
   end
 
   # Userモデルのnormalized_email属性に
