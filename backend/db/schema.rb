@@ -15,9 +15,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_104130) do
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["uuid"], name: "index_comments_on_uuid", unique: true
   end
 
   create_table "post_comments", force: :cascade do |t|
@@ -39,10 +41,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_104130) do
   end
 
   create_table "posts", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "title", null: false
     t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["uuid"], name: "index_posts_on_uuid", unique: true
   end
 
   create_table "tags", force: :cascade do |t|
