@@ -8,8 +8,6 @@ class User < ApplicationRecord
   has_many :user_comments, dependent: :destroy
   has_many :comments, through: :user_comments
 
-  has_secure_password
-
   # 半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上100文字以下の正規表現
   PASSWORD_REGEXP = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,100}+\z/.freeze
 
@@ -22,7 +20,7 @@ class User < ApplicationRecord
     length: { in: 4..15 },
     uniqueness: true,
     format: USER_ID_REGEXP
-  validates :name, :password_digest, presence: true
+  validates :name, presence: true
   validates :email, :normalized_email,
     presence: true,
     uniqueness: true,
