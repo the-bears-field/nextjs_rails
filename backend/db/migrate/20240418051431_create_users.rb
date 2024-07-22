@@ -4,8 +4,8 @@ class CreateUsers < ActiveRecord::Migration[7.1]
       t.string :user_id, null: false
       t.string :name, null: false
       t.text :biography, null: false
-      t.string :email, null: false
-      t.string :normalized_email, null: false
+      t.string :email, null: false, default: ""
+      t.string :normalized_email, null: false, default: ""
 
       t.timestamps
 
