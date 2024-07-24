@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request do
+RSpec.describe "V1::Posts", type: :request do
   let(:user) { FactoryBot.create(:user, :with_posts) }
 
   describe "GET /v1/users/:user_id/posts エンドポイントのテスト" do
