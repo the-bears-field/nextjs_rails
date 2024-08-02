@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, path: 'v1/users'
   namespace :v1 do
     resources :users, param: :user_id do
       resources :posts, param: :uuid
