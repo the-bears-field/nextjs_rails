@@ -16,6 +16,13 @@ class V1::PostsController < ApplicationController
   end
 
   def create
+    @post = Post.new(post_params)
+
+    if @post.save
+      render json: { status: 'SUCCESS', data: @post }, status: :created
+    else
+      render json: { status: 'ERROR', data: @post.error }, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -35,5 +42,9 @@ class V1::PostsController < ApplicationController
 
   def set_post
     @post = @user.posts.find_by!(uuid: params[:uuid])
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :description)
   end
 end

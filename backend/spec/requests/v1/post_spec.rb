@@ -28,4 +28,19 @@ RSpec.describe "V1::Posts", type: :request do
       expect(response).to have_http_status(200)
     end
   end
+
+  describe "POST /v1/users/:user_id/posts エンドポイントのテスト" do
+    it "ステータスコード201が返されることを確認" do
+      params = {
+        post: {
+          title: Faker::Lorem.unique.sentence,
+          description: Faker::Lorem.unique.paragraph(sentence_count: 10)
+        }
+      }
+
+      post "/v1/users/#{user.user_id}/posts", params: params
+
+      expect(response).to have_http_status(201)
+    end
+  end
 end
