@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'devise/jwt/test_helpers'
 
 RSpec.describe "V1::Posts", type: :request do
   let(:user) { FactoryBot.create(:user, :with_posts) }
@@ -37,8 +38,10 @@ RSpec.describe "V1::Posts", type: :request do
           description: Faker::Lorem.unique.paragraph(sentence_count: 10)
         }
       }
+      headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
+      auth_headers = Devise::JWT::TestHelpers.auth_headers(headers, user)
 
-      post "/v1/users/#{user.user_id}/posts", params: params
+      post "/v1/users/#{user.user_id}/posts", headers: auth_headers, params: params, as: :json
 
       expect(response).to have_http_status(201)
     end
