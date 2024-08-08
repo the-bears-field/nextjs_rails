@@ -32,9 +32,8 @@ RSpec.describe "V1::Posts", type: :request do
 
   describe "POST /v1/users/:user_id/posts エンドポイントのテスト" do
     it "ステータスコード201が返されることを確認" do
+      auth_headers = sign_in(user)
       params = FactoryBot.attributes_for(:post)
-      headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-      auth_headers = Devise::JWT::TestHelpers.auth_headers(headers, user)
 
       post "/v1/users/#{user.user_id}/posts", headers: auth_headers, params: params, as: :json
 

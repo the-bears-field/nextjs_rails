@@ -62,6 +62,9 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # 認証に関わるヘルパーモジュール
+  config.include AuthenticationHelper, type: :request
 end
 
 # FactoryBot::SyntaxRunnerにヘルパーモジュールを追加する処理
