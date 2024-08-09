@@ -40,4 +40,21 @@ RSpec.describe "V1::Posts", type: :request do
       expect(response).to have_http_status(201)
     end
   end
+
+  describe "PUT /v1/users/:user_id/posts/:uuid エンドポイントのテスト" do
+    it "ステータスコード204が返されることを確認" do
+      auth_headers = sign_in(user)
+
+      user.posts.count.times do |int|
+        params = FactoryBot.attributes_for(:post)
+
+        put "/v1/users/#{user.user_id}/posts/#{user.posts[int].uuid}",
+            headers: auth_headers,
+            params: params,
+            as: :json
+
+        expect(response).to have_http_status(204)
+      end
+    end
+  end
 end

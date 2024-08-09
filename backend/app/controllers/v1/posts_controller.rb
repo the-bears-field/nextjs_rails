@@ -30,6 +30,11 @@ class V1::PostsController < ApplicationController
   end
 
   def update
+    if @post.update(post_params)
+      render json: { status: 'SUCCESS', data: @post }, status: :no_content
+    else
+      render json: { status: 'ERROR', data: @post.error }, status: :conflict
+    end
   end
 
   def destroy
