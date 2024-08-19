@@ -38,6 +38,11 @@ class V1::PostsController < ApplicationController
   end
 
   def destroy
+    if @post.destroy
+      render json: { status: 'SUCCESS', data: @post }, status: :no_content
+    else
+      render json: { status: 'ERROR', data: @post.error }, status: :bad_request
+    end
   end
 
   private

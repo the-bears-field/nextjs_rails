@@ -57,4 +57,24 @@ RSpec.describe "V1::Posts", type: :request do
       end
     end
   end
+
+  describe "DELETE /v1/users/:user_id/posts/:uuid エンドポイントのテスト" do
+    it "ステータスコード204のレスポンスを返し、かつ記事の削除が成功していることを確認" do
+      auth_headers = sign_in(user)
+      int = rand(user.posts.count)
+      target_uuid = user.posts[int].uuid
+
+      # 削除前に記事が存在しているかを確認
+      expect(Post.find_by(uuid: target_uuid)).to_not eq(nil)
+
+      delete "/v1/users/#{user.user_id}/posts/#{target_uuid}",
+          headers: auth_headers,
+          as: :json
+
+      # ステータスコード204のレスポンスを返すか確認
+      expect(response).to have_http_status(204)
+      # 記事の削除が成功しているか確認
+      expect(Post.find_by(uuid: target_uuid)).to eq(nil)
+    end
+  end
 end
