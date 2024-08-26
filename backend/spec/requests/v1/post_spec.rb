@@ -3,6 +3,7 @@ require 'devise/jwt/test_helpers'
 
 RSpec.describe "V1::Posts", type: :request do
   let(:user) { FactoryBot.create(:user, :with_posts) }
+  let(:auth_headers) { sign_in(user) }
 
   describe "GET /v1/users/:user_id/posts エンドポイントのテスト" do
     before { get "/v1/users/#{user.user_id}/posts" }
@@ -31,50 +32,99 @@ RSpec.describe "V1::Posts", type: :request do
   end
 
   describe "POST /v1/users/:user_id/posts エンドポイントのテスト" do
-    it "ステータスコード201が返されることを確認" do
-      auth_headers = sign_in(user)
-      params = FactoryBot.attributes_for(:post)
+    before do
+      @params = FactoryBot.attributes_for(:post)
+    end
 
-      post "/v1/users/#{user.user_id}/posts", headers: auth_headers, params: params, as: :json
+    it "投稿前の記事が存在しないことを確認" do
+      expect(
+        Post.where(
+          title: @params[:title]
+        ).where(
+          description: @params[:description]
+        ).blank?
+      ).to be_truthy
+    end
+
+    it "ステータスコード201が返されることを確認" do
+      post "/v1/users/#{user.user_id}/posts",
+        headers: auth_headers,
+        params: @params,
+        as: :json
 
       expect(response).to have_http_status(201)
+    end
+
+    it "投稿が正常にされていることを確認" do
+      post "/v1/users/#{user.user_id}/posts",
+        headers: auth_headers,
+        params: @params,
+        as: :json
+
+      expect(
+        Post.where(
+          title: @params[:title]
+        ).where(
+          description: @params[:description]
+        ).present?
+      ).to be_truthy
     end
   end
 
   describe "PUT /v1/users/:user_id/posts/:uuid エンドポイントのテスト" do
+    before do
+      @params = FactoryBot.attributes_for(:post)
+      @random_int = rand(user.posts.count)
+    end
+
+    it "変更前の記事が同一であることを確認" do
+      target_uuid = user.posts[@random_int].uuid
+      post = Post.find_by(uuid: target_uuid)
+
+      expect(post.title).to eq(user.posts[@random_int].title)
+      expect(post.description).to eq(user.posts[@random_int].description)
+    end
+
     it "ステータスコード204が返されることを確認" do
-      auth_headers = sign_in(user)
+      put "/v1/users/#{user.user_id}/posts/#{user.posts[@random_int].uuid}",
+          headers: auth_headers,
+          params: @params,
+          as: :json
 
-      user.posts.count.times do |int|
-        params = FactoryBot.attributes_for(:post)
+      expect(response).to have_http_status(204)
+    end
 
-        put "/v1/users/#{user.user_id}/posts/#{user.posts[int].uuid}",
-            headers: auth_headers,
-            params: params,
-            as: :json
+    it "記事の変更が成功しているか確認" do
+      put "/v1/users/#{user.user_id}/posts/#{user.posts[@random_int].uuid}",
+          headers: auth_headers,
+          params: @params,
+          as: :json
 
-        expect(response).to have_http_status(204)
-      end
+      target_uuid = user.posts[@random_int].uuid
+      post = Post.find_by(uuid: target_uuid)
+
+      expect(post.title).to_not eq(user.posts[@random_int].title)
+      expect(post.description).to_not eq(user.posts[@random_int].description)
     end
   end
 
   describe "DELETE /v1/users/:user_id/posts/:uuid エンドポイントのテスト" do
-    it "ステータスコード204のレスポンスを返し、かつ記事の削除が成功していることを確認" do
-      auth_headers = sign_in(user)
-      int = rand(user.posts.count)
-      target_uuid = user.posts[int].uuid
+    before { @target_post = user.posts.sample }
 
-      # 削除前に記事が存在しているかを確認
-      expect(Post.find_by(uuid: target_uuid)).to_not eq(nil)
-
-      delete "/v1/users/#{user.user_id}/posts/#{target_uuid}",
+    it "記事の削除が成功していることを確認" do
+      expect {
+        delete "/v1/users/#{user.user_id}/posts/#{@target_post.uuid}",
           headers: auth_headers,
           as: :json
+      }.to change { Post.count }.by(-1)
+    end
 
-      # ステータスコード204のレスポンスを返すか確認
+    it "ステータスコード204が返されることを確認" do
+      delete "/v1/users/#{user.user_id}/posts/#{@target_post.uuid}",
+        headers: auth_headers,
+        as: :json
+
       expect(response).to have_http_status(204)
-      # 記事の削除が成功しているか確認
-      expect(Post.find_by(uuid: target_uuid)).to eq(nil)
     end
   end
 end
