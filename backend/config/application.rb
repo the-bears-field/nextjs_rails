@@ -41,5 +41,10 @@ module App
         helper_specs: false,
         routing_specs: false
     end
+
+    # クッキーおよびセッションストアに関わるミドルウェアを、
+    # ミドルウェアスタックの末尾に追加する処理
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
   end
 end

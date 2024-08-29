@@ -4,6 +4,7 @@ FactoryBot.define do
     name { Faker::Internet.unique.username }
     email { Faker::Internet.unique.email(domain: 'example.com') }
     password { 'Password1234' }
+    password_confirmation { 'Password1234' }
 
     # ユーザーと紐づいた投稿を生成
     trait :with_posts do
