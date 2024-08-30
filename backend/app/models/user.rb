@@ -44,7 +44,7 @@ class User < ApplicationRecord
   # @return [nil]
   def set_sanitized_attributes
     self.name = sanitize_string_attribute(:name)
-    self.biography = biography.nil? ? "" : sanitize_string_attribute(:biography)
+    self.biography = biography.blank? ? "" : sanitize_string_attribute(:biography)
   end
 
   # Userモデルのnormalized_email属性に
