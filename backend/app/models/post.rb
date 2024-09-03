@@ -10,6 +10,8 @@ class Post < ApplicationRecord
 
   before_validation :set_sanitized_attributes
 
+  private
+
   # トリミングとエスケープをした文字列を、各属性に定義するセッター関数
   #
   # @return [nil]
