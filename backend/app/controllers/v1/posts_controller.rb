@@ -6,11 +6,11 @@ class V1::PostsController < ApplicationController
   def index
     @posts = @user.posts.order(created_at: :desc)
 
-    render json: @posts
+    render json: @posts.map(&:as_index_show_json)
   end
 
   def show
-    render json: @post
+    render json: @post.as_index_show_json
   end
 
   def new

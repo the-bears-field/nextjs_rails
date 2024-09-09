@@ -10,6 +10,23 @@ class Post < ApplicationRecord
 
   before_validation :set_sanitized_attributes
 
+  # Postsコントローラーのindexおよびshowアクション用のJSONを返す関数
+  def as_index_show_json
+    as_json(
+      root: true,
+      except: [:id],
+      include: {
+        tags: { only: [:name] },
+        comments: {
+          except: [:id],
+          include: {
+            users: { only: [:user_id, :name] }
+          }
+        }
+      }
+    )
+  end
+
   private
 
   # トリミングとエスケープをした文字列を、各属性に定義するセッター関数
