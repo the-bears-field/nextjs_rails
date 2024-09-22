@@ -4,9 +4,13 @@ require 'devise/jwt/test_helpers'
 RSpec.describe "V1::Posts", type: :request do
   let(:user) { FactoryBot.create(:user, :with_posts) }
   let(:auth_headers) { sign_in(user) }
+  let(:origin) { 'http://localhost' }
 
   describe "GET /v1/users/:user_id/posts エンドポイントのテスト" do
-    before { get "/v1/users/#{user.user_id}/posts" }
+    before do
+      get "/v1/users/#{user.user_id}/posts",
+        headers: { origin: origin }
+    end
 
     it '投稿データが空でないこと、投稿データの数が正しいことを確認' do
       expect(JSON.parse(response.body)).not_to be_empty
@@ -16,10 +20,23 @@ RSpec.describe "V1::Posts", type: :request do
     it 'ステータスコード200が返されることを確認' do
       expect(response).to have_http_status(200)
     end
+
+    context 'レスポンスヘッダーの確認' do
+      it 'Access-Control-Allow-Origin が、設定したオリジンの値と同一であることを確認' do
+        expect(response.headers['Access-Control-Allow-Origin']).to eq(origin)
+      end
+
+      it 'Access-Control-Allow-Credentials が、`true`であることを確認' do
+        expect(response.headers['Access-Control-Allow-Credentials']).to be_truthy
+      end
+    end
   end
 
   describe "GET /v1/users/:user_id/posts/:uuid エンドポイントのテスト" do
-    before { get "/v1/users/#{user.user_id}/posts/#{user.posts[0].uuid}" }
+    before do
+      get "/v1/users/#{user.user_id}/posts/#{user.posts[0].uuid}",
+        headers: { origin: origin }
+    end
 
     it '投稿データが空でないこと、投稿データの数が正しいことを確認' do
       expect(JSON.parse(response.body)).not_to be_empty
@@ -28,6 +45,16 @@ RSpec.describe "V1::Posts", type: :request do
 
     it 'ステータスコード200が返されることを確認' do
       expect(response).to have_http_status(200)
+    end
+
+    context 'レスポンスヘッダーの確認' do
+      it 'Access-Control-Allow-Origin: 設定したオリジンの値と同一であることを確認' do
+        expect(response.headers['Access-Control-Allow-Origin']).to eq(origin)
+      end
+
+      it 'Access-Control-Allow-Credentials が`true`であることを確認' do
+        expect(response.headers['Access-Control-Allow-Credentials']).to be_truthy
+      end
     end
   end
 
