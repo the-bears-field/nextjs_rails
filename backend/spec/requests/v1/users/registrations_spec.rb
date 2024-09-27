@@ -58,4 +58,30 @@ RSpec.describe "V1::Users::Registrations", type: :request do
       expect(changed_user.biography).to_not eq(user.biography)
     end
   end
+
+  describe "DELETE /v1/users エンドポイントのテスト" do
+    before do
+      delete '/v1/users',
+        headers: auth_headers.merge({ origin: origin }),
+        as: :json
+    end
+
+    it "ステータスコード204が返されることを確認" do
+      expect(response).to have_http_status(204)
+    end
+
+    it 'Access-Control-Allow-Credentials が`true`であることを確認' do
+      expect(response.headers['Access-Control-Allow-Credentials']).to be_truthy
+    end
+
+    it "ユーザー削除が正常に完了していることを確認" do
+      expect(
+        User.find_by(
+          user_id: user.user_id,
+          name: user.name,
+          email: user.email
+        ).present?
+      ).to be_falsey
+    end
+  end
 end
