@@ -46,5 +46,8 @@ module App
     # ミドルウェアスタックの末尾に追加する処理
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+
+    # Deviseメーラーの規定のURLオプションを設定
+    config.action_mailer.default_url_options = { host: 'api.localhost', port: 80 }
   end
 end
