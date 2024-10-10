@@ -3,6 +3,7 @@
 class V1::Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
+  before_action :validate_origin, only: [:create, :update, :destroy]
 
   # GET /resource/sign_up
   # def new
@@ -64,4 +65,13 @@ class V1::Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  # リクエストのオリジンヘッダーを検証
+  # オリジンではない場合は、エラーを返す
+  def validate_origin
+    allowed_origins = ['http://localhost']
+    unless allowed_origins.include?(request.headers['Origin'])
+      render json: { errors: 'このオリジンは許可されていません' }, status: :forbidden
+    end
+  end
 end
