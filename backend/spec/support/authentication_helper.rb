@@ -15,7 +15,10 @@ module AuthenticationHelper
       }
     }
 
-    post '/v1/users/sign_in', params: params, as: :json
+    post '/v1/users/sign_in',
+      headers: { origin: 'http://localhost' },
+      params: params,
+      as: :json
 
     token = response.headers['Authorization']
 
