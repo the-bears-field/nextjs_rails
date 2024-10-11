@@ -24,6 +24,7 @@ services:
     environment:
       TZ: ${TIME_ZONE}
       RAILS_ENV: development
+      DEVISE_JWT_SECRET_KEY: ${DEVISE_JWT_SECRET_KEY}
     expose:
       - "3001"
     networks:
