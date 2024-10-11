@@ -65,13 +65,4 @@ class V1::Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
-
-  # リクエストのオリジンヘッダーを検証
-  # オリジンではない場合は、エラーを返す
-  def validate_origin
-    allowed_origins = ['http://localhost']
-    unless allowed_origins.include?(request.headers['Origin'])
-      render json: { errors: 'このオリジンは許可されていません' }, status: :forbidden
-    end
-  end
 end
