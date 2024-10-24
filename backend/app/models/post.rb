@@ -13,10 +13,10 @@ class Post < ApplicationRecord
   # Postsコントローラーのindexおよびshowアクション用のJSONを返す関数
   def as_index_show_json
     as_json(
-      root: true,
       except: [:id],
       include: {
         tags: { only: [:name] },
+        users: { only: [:user_id, :name]},
         comments: {
           except: [:id],
           include: {

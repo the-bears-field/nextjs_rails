@@ -40,7 +40,7 @@ RSpec.describe "V1::Posts", type: :request do
 
     it '投稿データが空でないこと、投稿データの数が正しいことを確認' do
       expect(JSON.parse(response.body)).not_to be_empty
-      expect(JSON.parse(response.body)['post']['uuid']).to eq(user.posts[0].uuid)
+      expect(JSON.parse(response.body)['uuid']).to eq(user.posts[0].uuid)
     end
 
     it 'ステータスコード200が返されることを確認' do
