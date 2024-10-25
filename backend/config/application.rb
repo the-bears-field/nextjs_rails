@@ -49,5 +49,13 @@ module App
 
     # Deviseメーラーの規定のURLオプションを設定
     config.action_mailer.default_url_options = { host: 'api.localhost', port: 80 }
+
+    # webコンテナからのアクセスを許可する設定
+    config.hosts << 'web'
+
+    # `example.com`および`www.example.com`や`image.example.com`などの
+    # サブドメインを許可する設定
+    config.hosts << 'example.com'
+    config.hosts << /.*\.example\.com/
   end
 end
