@@ -30,7 +30,7 @@ ActiveRecord::Base.transaction do
       3.times do
         post = Post.create!(
           title: Faker::Lorem.sentence(word_count: 3),
-          description: Faker::Lorem.paragraph(sentence_count: 2)
+          description: Faker::Lorem.paragraph(sentence_count: 10)
         )
 
         UserPost.create!(user: user, post: post)
