@@ -27,3 +27,5 @@ export const postSchema = z.object({
   comments: z.array(commentSchema),
   users: z.array(userSchema),
 });
+
+export const urlSchema = z.string().url();
