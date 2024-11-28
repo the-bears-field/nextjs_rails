@@ -10,15 +10,31 @@ const origin: string = "http://web";
 export async function fetchPosts(user_id: string): Promise<Post[]> {
   const url: string = generateUrl(`/v1/users/${user_id}/posts`);
 
-  const response: AxiosResponse = await axios.get(url, {
-    insecureHTTPParser: true,
-  });
+  try {
+    const response: AxiosResponse = await axios.get(url, {
+      insecureHTTPParser: true,
+    });
 
-  const parsedData = postSchema.array().safeParse(response.data);
+    const parsedData = postSchema.array().safeParse(response.data);
 
-  if (!parsedData.success) throw new Error(parsedData.error.message);
+    if (!parsedData.success) {
+      parsedData.error.issues.forEach((issue) => {
+        console.error(
+          `バリデーションエラー ${issue.path.join(".")}: ${issue.message}`
+        );
+      });
+      throw new Error("無効なレスポンスデータ形式です");
+    }
 
-  return parsedData.data;
+    return parsedData.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("API呼び出しに失敗:", error.message);
+      throw new Error("APIからの投稿の取得に失敗しました");
+    }
+    console.error("予期しないエラー:", error);
+    throw new Error("予期しないエラーが発生しました");
+  }
 }
 
 // URLを検証して生成する関数
