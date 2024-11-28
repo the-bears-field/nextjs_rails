@@ -6,7 +6,7 @@ type Post = z.infer<typeof postSchema>;
 
 const origin: string = "http://web";
 
-// APIサーバーから複数の投稿データを取得
+/** APIサーバーから複数の投稿データを取得 */
 export async function fetchPosts(user_id: string): Promise<Post[]> {
   const url: string = generateUrl(`/v1/users/${user_id}/posts`);
 
@@ -37,7 +37,7 @@ export async function fetchPosts(user_id: string): Promise<Post[]> {
   }
 }
 
-// URLを検証して生成する関数
+/** URLを検証して生成する関数 */
 function generateUrl(path: string): string {
   const parsedUrl = urlSchema.safeParse(`${origin}${path}`);
 
