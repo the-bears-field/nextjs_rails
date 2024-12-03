@@ -6,6 +6,7 @@ export const userIdSchema = z
   .min(4)
   .max(15)
   .regex(/^[a-zA-Z0-9_]{4,15}$/);
+export const uuidSchema = z.string().uuid();
 
 export const tagSchema = z.object({
   name: z.string(),
@@ -17,7 +18,7 @@ export const userSchema = z.object({
 });
 
 export const commentSchema = z.object({
-  uuid: z.string().uuid(),
+  uuid: uuidSchema,
   description: z.string(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
@@ -25,7 +26,7 @@ export const commentSchema = z.object({
 });
 
 export const postSchema = z.object({
-  uuid: z.string().uuid(),
+  uuid: uuidSchema,
   title: z.string(),
   description: z.string(),
   created_at: z.string().datetime(),
