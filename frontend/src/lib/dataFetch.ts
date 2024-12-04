@@ -1,11 +1,13 @@
 import axios, { AxiosResponse } from "axios";
-import { postSchema, urlSchema, userIdSchema, uuidSchema } from "./schemas";
+import { postSchema } from "./schemas";
 import { z } from "zod";
-import { generateParsedData } from "./generateParsedData";
+import {
+  generateUrl,
+  generateUserId,
+  generateUuid,
+} from "./generateParsedData";
 
 type Post = z.infer<typeof postSchema>;
-
-const origin: string = "http://web";
 
 /** APIサーバーから複数の投稿データを取得 */
 export async function fetchPosts(userId: string): Promise<Post[]> {
@@ -59,20 +61,4 @@ async function fetchData<T extends z.ZodTypeAny>(params: {
     console.error("予期しないエラー:", error);
     throw new Error("予期しないエラーが発生しました");
   }
-}
-
-/** URLを検証、生成する関数 */
-function generateUrl(path: string): string {
-  const url: string = `${origin}${path}`;
-  return generateParsedData({ schema: urlSchema, data: url });
-}
-
-/** ユーザーIdを検証、生成する関数 */
-function generateUserId(userId: string): string {
-  return generateParsedData({ schema: userIdSchema, data: userId });
-}
-
-/** UUIDを検証、生成する関数 */
-function generateUuid(uuid: string): string {
-  return generateParsedData({ schema: uuidSchema, data: uuid });
 }
