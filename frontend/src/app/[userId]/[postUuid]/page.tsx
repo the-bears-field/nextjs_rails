@@ -5,10 +5,11 @@ import { z } from "zod";
 type Post = z.infer<typeof postSchema>;
 
 export default async function Page({
-  params: { userId, postUuid },
+  params,
 }: {
-  params: { userId: string; postUuid: string };
+  params: Promise<{ userId: string; postUuid: string }>;
 }) {
+  const { userId, postUuid } = await params;
   const postData: Post = await fetchPost({
     userId: userId,
     postUuid: postUuid,
