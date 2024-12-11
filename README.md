@@ -4,9 +4,9 @@
 
 - フロントエンド
   - Node.js v20.11.0
-  - react@18.2.0
-  - typescript@5.4.5
-  - next@14.1.4
+  - react@19.0.0
+  - typescript@5.6.3
+  - next@15.1.0
 - バックエンド
   - Ruby ruby 3.3.4
   - Rails 7.2.0
