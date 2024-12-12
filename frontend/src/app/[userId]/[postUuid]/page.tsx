@@ -1,5 +1,6 @@
 import { fetchPost, fetchPosts } from "@/lib/dataFetch";
 import { postSchema } from "@/lib/schemas";
+import Link from "next/link";
 import { z } from "zod";
 
 type Post = z.infer<typeof postSchema>;
@@ -30,7 +31,9 @@ export default async function Page({
           </div>
           {postData.comments.map((comment, key) => (
             <div key={key} className="m-4 ">
-              <p className="text-sm">{comment.users[0].name}</p>
+              <Link href={`../${comment.users[0].user_id}`} className="text-sm">
+                {comment.users[0].name}
+              </Link>
               <p>{comment.description}</p>
             </div>
           ))}

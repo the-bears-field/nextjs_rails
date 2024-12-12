@@ -33,7 +33,9 @@ export default async function Page({
             </div>
             {post.comments.map((comment, key) => (
               <div key={key} className="m-4 ">
-                <p className="text-sm">{comment.users[0].name}</p>
+                <Link href={`${comment.users[0].user_id}`} className="text-sm">
+                  {comment.users[0].name}
+                </Link>
                 <p>{comment.description}</p>
               </div>
             ))}
