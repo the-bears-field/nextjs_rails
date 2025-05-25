@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from "axios";
 import { postSchema } from "./schemas";
 import { z } from "zod";
 import {
@@ -18,7 +17,10 @@ export async function fetchPosts(userId: string): Promise<Post[]> {
 }
 
 /** APIサーバーから単一の投稿データを取得 */
-export async function fetchPost(params: { userId: string; postUuid: string }) {
+export async function fetchPost(params: {
+  userId: string;
+  postUuid: string;
+}): Promise<Post> {
   const { userId, postUuid } = params;
   const parsedUserId: string = generateUserId(userId);
   const parsedPostUuid: string = generateUuid(postUuid);
@@ -33,32 +35,25 @@ export async function fetchPost(params: { userId: string; postUuid: string }) {
 async function fetchData<T extends z.ZodTypeAny>(params: {
   schema: T;
   url: string;
-}) {
+}): Promise<z.infer<T>> {
   const { url, schema } = params;
+  const response: Response = await fetch(url, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+  });
 
-  try {
-    const response: AxiosResponse = await axios.get(url, {
-      insecureHTTPParser: true,
-    });
-
-    const parsedData = schema.safeParse(response.data);
-
-    if (!parsedData.success) {
-      parsedData.error.issues.forEach((issue) => {
-        console.error(
-          `バリデーションエラー ${issue.path.join(".")}: ${issue.message}`
-        );
-      });
-      throw new Error("無効なレスポンスデータ形式です");
-    }
-
-    return parsedData.data as z.infer<T>;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("API呼び出しに失敗:", error.message);
-      throw new Error("APIからの投稿の取得に失敗しました");
-    }
-    console.error("予期しないエラー:", error);
-    throw new Error("予期しないエラーが発生しました");
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
+
+  const json = await response.json();
+  const parsedData = schema.safeParse(json);
+
+  if (!parsedData.success) {
+    console.error(parsedData.error.issues);
+    throw new Error(`ValidationError: ${parsedData.error.issues}`);
+  }
+
+  return parsedData.data;
 }

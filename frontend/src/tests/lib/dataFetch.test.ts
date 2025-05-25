@@ -1,20 +1,29 @@
-import axios from "axios";
 import { fetchPosts } from "@/lib/dataFetch";
 import { postSchema } from "@/lib/schemas";
 import { generateMockPosts } from "@/lib/mocks/generateMockData";
 
-/** axiosをモック化 */
-jest.mock("axios");
-
-/** モック版axiosを作成 */
-const mockedAxios = axios as jest.Mocked<typeof axios>;
-
 describe("fetchPosts", () => {
+  const originalFetch = global.fetch;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.fetch = jest.fn();
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+  });
+
   it("正しいデータを返す", async () => {
     const mockData = generateMockPosts(3);
 
-    /** 非同期で成功したPromiseを返すモック関数 */
-    mockedAxios.get.mockResolvedValue({ data: mockData });
+    //** 非同期で成功したPromiseを返すモック関数 */
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      json: async () => mockData,
+    });
 
     const result = await fetchPosts("user_1");
     expect(result).toEqual(mockData);
@@ -25,7 +34,12 @@ describe("fetchPosts", () => {
     const invalidData = [{}];
 
     /** 非同期で失敗したPromiseを返すモック関数 */
-    mockedAxios.get.mockResolvedValue({ data: invalidData });
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      json: async () => invalidData,
+    });
 
     await expect(fetchPosts("user_1")).rejects.toThrow();
   });
