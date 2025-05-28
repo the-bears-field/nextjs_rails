@@ -12,7 +12,19 @@ class V1::Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    super
+    build_resource(sign_up_params)
+
+    if resource.save
+      render json: {
+        message: 'ユーザー登録が成功しました。',
+        user: resource
+      }, status: :created
+    else
+      render json: {
+        message: 'ユーザー登録に失敗しました。',
+        errors: resource.errors.full_messages
+      }, status: :unprocessable_entity
+    end
   end
 
   # GET /resource/edit
