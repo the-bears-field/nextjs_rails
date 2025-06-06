@@ -1,11 +1,8 @@
 import { z } from "zod";
+import { passwordRegex, userIdRegex } from "./regexes";
 
 export const urlSchema = z.string().url();
-export const userIdSchema = z
-  .string()
-  .min(4)
-  .max(15)
-  .regex(/^[a-zA-Z0-9_]{4,15}$/);
+export const userIdSchema = z.string().min(4).max(15).regex(userIdRegex);
 export const uuidSchema = z.string().uuid();
 
 export const tagSchema = z.object({
@@ -15,6 +12,8 @@ export const tagSchema = z.object({
 export const userSchema = z.object({
   user_id: userIdSchema,
   name: z.string(),
+  email: z.string().email(),
+  password: z.string().min(8).max(100).regex(passwordRegex),
 });
 
 export const commentSchema = z.object({
