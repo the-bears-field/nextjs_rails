@@ -1,8 +1,8 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 import { urlSchema, userIdSchema, uuidSchema } from "./schemas";
 
 /** Zodで検証してデータを返す関数 */
-export function generateParsedData<T extends z.ZodTypeAny>(params: {
+export function generateParsedData<T extends z.ZodType>(params: {
   schema: T;
   data: unknown;
 }) {

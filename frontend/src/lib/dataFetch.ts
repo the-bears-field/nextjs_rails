@@ -1,5 +1,5 @@
 import { postSchema } from "./schemas";
-import { z } from "zod";
+import { z } from "zod/v4";
 import {
   generateUrl,
   generateUserId,
@@ -32,7 +32,7 @@ export async function fetchPost(params: {
 }
 
 /** APIサーバーからデータを取得 */
-async function fetchData<T extends z.ZodTypeAny>(params: {
+async function fetchData<T extends z.ZodType>(params: {
   schema: T;
   url: string;
 }): Promise<z.infer<T>> {

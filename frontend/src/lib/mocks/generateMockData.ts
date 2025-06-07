@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
-import { z } from "zod";
+import { z } from "zod/v4";
 import { commentSchema, postSchema, tagSchema, userSchema } from "../schemas";
 
 type Post = z.infer<typeof postSchema>;
