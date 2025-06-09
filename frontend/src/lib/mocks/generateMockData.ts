@@ -1,10 +1,17 @@
 import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod/v4";
-import { commentSchema, postSchema, tagSchema, userSchema } from "../schemas";
+import {
+  commentSchema,
+  postSchema,
+  tagSchema,
+  postUserSchema,
+  userSchema,
+} from "../schemas";
 
 type Post = z.infer<typeof postSchema>;
 type User = z.infer<typeof userSchema>;
+type PostUser = z.infer<typeof postUserSchema>;
 type Tag = z.infer<typeof tagSchema>;
 type Comment = z.infer<typeof commentSchema>;
 
@@ -30,6 +37,16 @@ export function generateMockUser(): User {
   };
 }
 
+// 投稿に関わるユーザーのモックを生成する関数
+export function generateMockPostUser(): PostUser {
+  return {
+    user_id: faker.word.noun({
+      length: { min: 4, max: 15 },
+    }),
+    name: faker.person.fullName(),
+  };
+}
+
 // コメントのモックを生成する関数
 function generateMockComment(): Comment {
   return {
@@ -37,7 +54,7 @@ function generateMockComment(): Comment {
     description: faker.lorem.paragraphs(),
     created_at: faker.date.past().toISOString(),
     updated_at: faker.date.recent().toISOString(),
-    users: [generateMockUser()],
+    users: [generateMockPostUser()],
   };
 }
 
@@ -51,7 +68,7 @@ function generateMockPost(): Post {
     updated_at: faker.date.recent().toISOString(),
     tags: Array.from({ length: faker.number.int(10) }, generateMockTag),
     comments: Array.from({ length: faker.number.int(5) }, generateMockComment),
-    users: [generateMockUser()],
+    users: [generateMockPostUser()],
   };
 }
 

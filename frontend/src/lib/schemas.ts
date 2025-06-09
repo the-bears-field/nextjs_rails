@@ -9,6 +9,11 @@ export const tagSchema = z.object({
   name: z.string(),
 });
 
+export const postUserSchema = z.object({
+  user_id: userIdSchema,
+  name: z.string(),
+});
+
 export const userSchema = z.object({
   user_id: userIdSchema,
   name: z.string(),
@@ -21,7 +26,7 @@ export const commentSchema = z.object({
   description: z.string(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
-  users: z.array(userSchema),
+  users: z.array(postUserSchema),
 });
 
 export const postSchema = z.object({
@@ -32,5 +37,5 @@ export const postSchema = z.object({
   updated_at: z.iso.datetime(),
   tags: z.array(tagSchema),
   comments: z.array(commentSchema),
-  users: z.array(userSchema),
+  users: z.array(postUserSchema),
 });
