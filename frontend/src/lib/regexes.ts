@@ -5,7 +5,7 @@
 export const userIdRegex: RegExp = /^[a-zA-Z0-9_]{4,15}$/;
 
 /** password向けの正規表現
- *  半角英小文字大文字数字をそれぞれ1種類以上含む
+ *  半角英小文字、大文字、数字、記号をそれぞれ1種類以上含む
  *  8文字以上、100文字以下
  */
 export const passwordRegex: RegExp =
