@@ -17,12 +17,14 @@ class V1::Users::RegistrationsController < Devise::RegistrationsController
     if resource.save
       render json: {
         message: 'ユーザー登録が成功しました。',
-        user: resource
+        user: resource,
+        success: true
       }, status: :created
     else
       render json: {
         message: 'ユーザー登録に失敗しました。',
-        errors: resource.errors.full_messages
+        errors: resource.errors.full_messages,
+        success: false
       }, status: :unprocessable_entity
     end
   end

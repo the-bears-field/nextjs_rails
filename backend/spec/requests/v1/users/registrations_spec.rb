@@ -40,6 +40,7 @@ RSpec.describe "V1::Users::Registrations", type: :request do
           ).present?
         ).to be_truthy
         expect(parsed_response["errors"]).to eq(nil)
+        expect(parsed_response["success"]).to be_truthy
       end
     end
 
@@ -65,6 +66,7 @@ RSpec.describe "V1::Users::Registrations", type: :request do
             ).present?
           ).to be_falsey
           expect(parsed_response["errors"]).to_not eq(nil)
+          expect(parsed_response["success"]).to be_falsey
         end
       end
 
@@ -92,6 +94,7 @@ RSpec.describe "V1::Users::Registrations", type: :request do
             ).present?
           ).to be_falsey
           expect(parsed_response["errors"]).to_not eq(nil)
+          expect(parsed_response["success"]).to be_falsey
         end
       end
     end
