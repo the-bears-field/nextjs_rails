@@ -28,9 +28,7 @@ function generateMockTag(): Tag {
 // ユーザーのモックを生成する関数
 export function generateMockUser(): User {
   return {
-    user_id: faker.word.noun({
-      length: { min: 4, max: 15 },
-    }),
+    user_id: faker.string.alphanumeric({ length: { min: 4, max: 15 } }),
     name: faker.person.fullName(),
     email: faker.internet.exampleEmail(),
     password: generatePassword(),
@@ -40,9 +38,7 @@ export function generateMockUser(): User {
 // 投稿に関わるユーザーのモックを生成する関数
 export function generateMockPostUser(): PostUser {
   return {
-    user_id: faker.word.noun({
-      length: { min: 4, max: 15 },
-    }),
+    user_id: faker.string.alphanumeric({ length: { min: 4, max: 15 } }),
     name: faker.person.fullName(),
   };
 }
