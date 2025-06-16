@@ -1,19 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
-import { z } from "zod/v4";
-import {
-  commentSchema,
-  postSchema,
-  tagSchema,
-  postUserSchema,
-  userSchema,
-} from "../schemas";
-
-type Post = z.infer<typeof postSchema>;
-type User = z.infer<typeof userSchema>;
-type PostUser = z.infer<typeof postUserSchema>;
-type Tag = z.infer<typeof tagSchema>;
-type Comment = z.infer<typeof commentSchema>;
+import type { Comment, Post, PostUser, Tag, User } from "../types";
 
 // 複数の投稿データを生成する関数
 export function generateMockPosts(count: number): Post[] {

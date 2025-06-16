@@ -5,8 +5,7 @@ import {
   generateUserId,
   generateUuid,
 } from "./generateParsedData";
-
-type Post = z.infer<typeof postSchema>;
+import type { Post } from "./types";
 
 /** APIサーバーから複数の投稿データを取得 */
 export async function fetchPosts(userId: string): Promise<Post[]> {
