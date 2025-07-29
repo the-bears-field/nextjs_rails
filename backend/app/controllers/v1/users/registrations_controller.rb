@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class V1::Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [:create]
-  before_action :configure_account_update_params, only: [:update]
   before_action :validate_origin, only: [:create, :update, :destroy]
 
   # GET /resource/sign_up
@@ -12,6 +10,9 @@ class V1::Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
+    # If you have extra params to permit, append them to the sanitizer.
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_id, :name, :biography])
+
     build_resource(sign_up_params)
 
     if resource.save
@@ -36,6 +37,9 @@ class V1::Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
+    # If you have extra params to permit, append them to the sanitizer.
+    devise_parameter_sanitizer.permit(:account_update, keys: [:user_id, :name, :biography])
+
     super
   end
 
@@ -54,16 +58,6 @@ class V1::Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   protected
-
-  # If you have extra params to permit, append them to the sanitizer.
-  def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_id, :name, :biography])
-  end
-
-  # If you have extra params to permit, append them to the sanitizer.
-  def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:user_id, :name, :biography])
-  end
 
   # デフォルトの処理を上書きし、パスワードを不要化
   def update_resource(resource, params)
