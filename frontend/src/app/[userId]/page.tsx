@@ -1,9 +1,6 @@
 import { fetchPosts } from "@/lib/dataFetch";
-import { postSchema } from "@/lib/schemas";
+import { Post } from "@/lib/types";
 import Link from "next/link";
-import { z } from "zod";
-
-type Post = z.infer<typeof postSchema>;
 
 export default async function Page({
   params,
