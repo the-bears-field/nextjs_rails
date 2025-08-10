@@ -1,4 +1,4 @@
-FROM ruby:3.3.4
+FROM ruby:3.4.5
 
 ENV ROOT="/app"
 ENV LANG=C.UTF-8
