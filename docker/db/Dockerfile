@@ -1,4 +1,4 @@
-FROM postgres:16.2
+FROM postgres:16.9
 
 RUN apt-get update -qq && \
     apt-get install -y vim git && \
