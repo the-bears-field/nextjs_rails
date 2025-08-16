@@ -54,7 +54,6 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    restart: always
     expose:
       - "8888"
     environment:
