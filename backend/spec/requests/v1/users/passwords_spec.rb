@@ -68,8 +68,8 @@ RSpec.describe "V1::Users::Passwords", type: :request do
         @params = {
           user: {
             reset_password_token: @token,
-            password: 'newPassword1234',
-            password_confirmation: 'newPassword1234'
+            password: 'newPassword1234!',
+            password_confirmation: 'newPassword1234!'
           }
         }
 
@@ -84,7 +84,7 @@ RSpec.describe "V1::Users::Passwords", type: :request do
       end
 
       it "パスワードがリセットされ、ユーザーはログインできること" do
-        expect(user.reload.valid_password?('newPassword1234')).to be_truthy
+        expect(user.reload.valid_password?('newPassword1234!')).to be_truthy
       end
     end
 
@@ -103,7 +103,7 @@ RSpec.describe "V1::Users::Passwords", type: :request do
         end
 
         it "パスワードがリセットされず、ユーザーはログインできないことを確認" do
-          expect(user.reload.valid_password?('newPassword1234')).to be_falsey
+          expect(user.reload.valid_password?('newPassword1234!')).to be_falsey
         end
       end
 
@@ -113,8 +113,8 @@ RSpec.describe "V1::Users::Passwords", type: :request do
           @params = {
             user: {
               reset_password_token: @token,
-              password: 'newPassword1234',
-              password_confirmation: 'newPassword1234'
+              password: 'newPassword1234!',
+              password_confirmation: 'newPassword1234!'
             }
           }
 
@@ -129,7 +129,7 @@ RSpec.describe "V1::Users::Passwords", type: :request do
         end
 
         it "パスワードがリセットされず、ユーザーはログインできないことを確認" do
-          expect(user.reload.valid_password?('newPassword1234')).to be_falsey
+          expect(user.reload.valid_password?('newPassword1234!')).to be_falsey
         end
       end
 
@@ -138,8 +138,8 @@ RSpec.describe "V1::Users::Passwords", type: :request do
           @params = {
             user: {
               reset_password_token: 'example',
-              password: 'newPassword1234',
-              password_confirmation: 'newPassword1234'
+              password: 'newPassword1234!',
+              password_confirmation: 'newPassword1234!'
             }
           }
 
@@ -154,7 +154,7 @@ RSpec.describe "V1::Users::Passwords", type: :request do
         end
 
         it "パスワードがリセットされず、ユーザーはログインできないことを確認" do
-          expect(user.reload.valid_password?('newPassword1234')).to be_falsey
+          expect(user.reload.valid_password?('newPassword1234!')).to be_falsey
         end
       end
     end

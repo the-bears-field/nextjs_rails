@@ -9,9 +9,9 @@ class User < ApplicationRecord
   has_many :user_comments, dependent: :destroy
   has_many :comments, through: :user_comments
 
-  # 半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上100文字以下の正規表現
-  PASSWORD_REGEXP = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,100}+\z/.freeze
-
+  # 半角英小文字、大文字、数字、記号をそれぞれ1種類以上含む
+  # 8文字以上、100文字以下の正規表現
+  PASSWORD_REGEXP = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!@#$%^&*()_\-=\[\]{};':"\\|,.<>\/?])[a-zA-Z\d!@#$%^&*()_\-=\[\]{};':"\\|,.<>\/?]{8,100}\z/.freeze
   # 半角英小文字大文字数字および半角アンダーバーいずれかを含む
   # 4文字以上15文字以下の正規表現
   USER_ID_REGEXP = /\A^[a-zA-Z0-9_]{4,15}$\z/.freeze
