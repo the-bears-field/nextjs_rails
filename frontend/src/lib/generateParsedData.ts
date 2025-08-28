@@ -13,10 +13,16 @@ export function generateParsedData<T extends z.ZodType>(params: {
 }
 
 /** URLを検証、生成する関数 */
-export function generateUrl(path: string): string {
-  const origin: string = "http://web";
+export function generateUrl(params: { origin: string; path: string }): string {
+  const { origin, path } = params;
   const url: string = `${origin}${path}`;
   return generateParsedData({ schema: urlSchema, data: url });
+}
+
+//** Dockerのコンテナ用のURLを検証、生成する関数 */
+export function generateContainerUrl(path: string): string {
+  const origin: string = "http://web";
+  return generateUrl({ origin: origin, path: path });
 }
 
 /** ユーザーIdを検証、生成する関数 */

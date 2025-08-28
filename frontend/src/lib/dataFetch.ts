@@ -1,7 +1,7 @@
 import { postSchema } from "./schemas";
 import { z } from "zod/v4";
 import {
-  generateUrl,
+  generateContainerUrl,
   generateUserId,
   generateUuid,
 } from "./generateParsedData";
@@ -10,7 +10,9 @@ import type { Post } from "./types";
 /** APIサーバーから複数の投稿データを取得 */
 export async function fetchPosts(userId: string): Promise<Post[]> {
   const parsedUserId: string = generateUserId(userId);
-  const parsedUrl: string = generateUrl(`/v1/users/${parsedUserId}/posts`);
+  const parsedUrl: string = generateContainerUrl(
+    `/v1/users/${parsedUserId}/posts`
+  );
 
   return await fetchData({ url: parsedUrl, schema: postSchema.array() });
 }
@@ -23,7 +25,7 @@ export async function fetchPost(params: {
   const { userId, postUuid } = params;
   const parsedUserId: string = generateUserId(userId);
   const parsedPostUuid: string = generateUuid(postUuid);
-  const parsedUrl: string = generateUrl(
+  const parsedUrl: string = generateContainerUrl(
     `/v1/users/${parsedUserId}/posts/${parsedPostUuid}`
   );
 
