@@ -46,7 +46,7 @@ services:
       - TZ=${TIME_ZONE}
       - PGTZ=${TIME_ZONE}
     volumes:
-      - ./docker/db/data:/var/lib/postgresql/data
+      - ./db/data:/var/lib/postgresql/data
     networks:
       - private
     expose:
@@ -73,8 +73,8 @@ services:
     environment:
       TZ: ${TIME_ZONE}
     volumes:
-      - ./docker/web/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./docker/web/log:/var/log/nginx
+      - ./web/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./web/log:/var/log/nginx
       - ./backend/public:/backend/public
       - ./backend/tmp:/backend/tmp
     ports:
