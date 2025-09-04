@@ -1,3 +1,4 @@
 /db/data/
 /web/log/
 .env
+.idea
