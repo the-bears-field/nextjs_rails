@@ -28,17 +28,14 @@ export const tagSchema = z.object({
   name: z.string(),
 });
 
-export const postUserSchema = z.object({
-  user_id: userIdSchema,
-  name: z.string(),
-});
-
 export const userSchema = z.object({
   user_id: userIdSchema,
   name: z.string().trim(),
   email: emailSchema,
   password: passwordSchema,
 });
+
+export const postUserSchema = userSchema.pick({ user_id: true, name: true });
 
 export const commentSchema = z.object({
   uuid: uuidSchema,
