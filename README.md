@@ -3,17 +3,21 @@
 ## 使用技術
 
 - フロントエンド
-  - Node.js v20.11.0
-  - react@19.0.0
-  - typescript@5.6.3
-  - next@15.1.0
+  - Node.js v22.18.0
+  - react@19.1.1
+  - typescript@5.9.2
+  - next@15.5.2
+  - zod@4.1.5
+  - tailwindcss@4.1.13
+  - jest@30.1.3
 - バックエンド
-  - Ruby ruby 3.3.4
-  - Rails 7.2.0
+  - Ruby 3.4.5
+  - Rails 8.0.2
+  - RSpec 3.13
 - データベース
-  - PostgreSQL 16.2
+  - PostgreSQL 17.5
 - Web サーバー
-  - nginx/1.23.4
+  - nginx/1.28.0
 
 ## 必要要件
 
@@ -37,7 +41,7 @@ cd nextjs_rails
 sh initialization.sh
 ```
 
-以上の過程を経てブラウザで[http://localhost](http://localhost)を開くと、閲覧可能となります。
+以上の過程を経てブラウザで[http://localhost](http://localhost)を開くと、ポートフォリオの閲覧が可能となります。
 
 ## データベース設計
 
