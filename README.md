@@ -9,7 +9,7 @@
   - next@15.5.2
   - zod@4.1.5
   - tailwindcss@4.1.13
-  - jest@30.1.3
+  - jest@29.4.1
 - バックエンド
   - Ruby 3.4.5
   - Rails 8.0.2
