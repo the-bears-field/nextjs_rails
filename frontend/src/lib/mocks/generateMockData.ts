@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
-import type { Comment, Post, PostUser, Tag, User } from "../types";
+import type { Comment, Post, PostUser, Tag, User } from "../../types/types";
 
 // 複数の投稿データを生成する関数
 export function generateMockPosts(count: number): Post[] {

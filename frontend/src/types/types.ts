@@ -5,7 +5,7 @@ import {
   postUserSchema,
   tagSchema,
   userSchema,
-} from "./schemas";
+} from "../lib/schemas";
 
 export type User = z.infer<typeof userSchema>;
 export type PostUser = z.infer<typeof postUserSchema>;
