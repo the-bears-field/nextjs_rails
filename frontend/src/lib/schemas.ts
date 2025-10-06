@@ -1,7 +1,7 @@
 import { z } from "zod/v4";
 import { passwordRegex, userIdRegex } from "./regexes";
 
-export const urlSchema = z.url();
+export const urlSchema = z.url().trim();
 
 export const userIdSchema = z
   .string()
@@ -25,7 +25,7 @@ export const passwordSchema = z
 export const uuidSchema = z.uuid();
 
 export const tagSchema = z.object({
-  name: z.string(),
+  name: z.string().trim(),
 });
 
 export const userSchema = z.object({
