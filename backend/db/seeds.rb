@@ -13,7 +13,7 @@ ActiveRecord::Base.transaction do
         biography: Faker::Lorem.paragraph(sentence_count: 2) || '',
         email: "user#{i + 1}@example.com",
         normalized_email: "user#{i + 1}@example.com",
-        password: 'Password1234'
+        password: 'Password@1234'
       )
       user.valid?
       users << user
