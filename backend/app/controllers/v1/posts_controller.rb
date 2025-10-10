@@ -20,9 +20,9 @@ class V1::PostsController < ApplicationController
     @post = Post.new(post_params)
 
     if @post.save
-      render json: { status: 'SUCCESS', data: @post }, status: :created
+      render json: { success: true, value: @post }, status: :created
     else
-      render json: { status: 'ERROR', data: @post.error }, status: :unprocessable_entity
+      render json: { success: false, errors: @post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -31,17 +31,17 @@ class V1::PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      render json: { status: 'SUCCESS', data: @post }, status: :no_content
+      render json: { success: true, value: @post }, status: :no_content
     else
-      render json: { status: 'ERROR', data: @post.error }, status: :conflict
+      render json: { success: false, errors: @post.errors.full_messages }, status: :conflict
     end
   end
 
   def destroy
     if @post.destroy
-      render json: { status: 'SUCCESS', data: @post }, status: :no_content
+      render json: { success: true, value: @post }, status: :no_content
     else
-      render json: { status: 'ERROR', data: @post.error }, status: :bad_request
+      render json: { success: false, errors: @post.errors.full_messages }, status: :bad_request
     end
   end
 
