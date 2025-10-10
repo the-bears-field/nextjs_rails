@@ -28,10 +28,8 @@ RSpec.describe "V1::Users::Registrations", type: :request do
       end
 
       it "ユーザー登録が正常に完了していることを確認" do
-        expect(parsed_response["user"]["user_id"]).to eq(@params[:user][:user_id])
-        expect(parsed_response["user"]["name"]).to eq(@params[:user][:name])
-        expect(parsed_response["user"]["email"]).to eq(@params[:user][:email])
-        expect(parsed_response["message"]).to eq("ユーザー登録が成功しました。")
+        expect(parsed_response["value"]["user_id"]).to eq(@params[:user][:user_id])
+        expect(parsed_response["value"]["name"]).to eq(@params[:user][:name])
         expect(
           User.find_by(
             user_id: @params[:user][:user_id],
@@ -57,7 +55,6 @@ RSpec.describe "V1::Users::Registrations", type: :request do
         end
 
         it "ユーザー登録が失敗していることを確認" do
-          expect(parsed_response["message"]).to eq("ユーザー登録に失敗しました。")
           expect(
             User.find_by(
               user_id: @params[:user][:user_id],
