@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
   def validate_origin
     allowed_origins = ['http://localhost']
     unless allowed_origins.include?(request.headers['Origin'])
-      render json: { errors: 'このオリジンは許可されていません' }, status: :forbidden
+      render json: { success: false, errors: ['このオリジンは許可されていません'] }, status: :forbidden
     end
   end
 end
