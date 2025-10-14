@@ -1,4 +1,4 @@
-import { fetchPost } from "@/lib/dataFetch";
+import { fetchPost } from "@/features/api/fetchData";
 import { Post } from "@/types/types";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import { fetchPosts } from "@/lib/dataFetch";
+import { fetchPosts } from "@/features/api/fetchData";
 import { postSchema } from "@/lib/schemas";
 import { generateMockPosts } from "@/lib/mocks/generateMockData";
 

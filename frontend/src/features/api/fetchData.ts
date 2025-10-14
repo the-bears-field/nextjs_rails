@@ -1,11 +1,11 @@
-import { postSchema } from "./schemas";
+import { postSchema } from "@/lib/schemas";
 import { z } from "zod/v4";
 import {
   generateContainerUrl,
   generateUserId,
   generateUuid,
-} from "./generateParsedData";
-import type { Post } from "../types/types";
+} from "@/lib/generateParsedData";
+import type { Post } from "@/types/types";
 
 /** APIサーバーから複数の投稿データを取得 */
 export async function fetchPosts(userId: string): Promise<Post[]> {
