@@ -28,7 +28,7 @@ export type Comment = z.infer<typeof commentSchema>;
  * @property {true} success
  * @property {T} value
  */
-type Success<T> = {
+export type Success<T> = {
   success: true;
   value: T;
 };
@@ -39,7 +39,7 @@ type Success<T> = {
  * @property {false} success
  * @property {E} errors
  */
-type Failure<E> = {
+export type Failure<E> = {
   success: false;
   errors: E;
 };
