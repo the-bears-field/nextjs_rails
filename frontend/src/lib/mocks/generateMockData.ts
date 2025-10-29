@@ -1,6 +1,7 @@
+import { randomInt } from "node:crypto";
 import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
-import type { Comment, Post, PostUser, Tag, User } from "../../types/types";
+import type { Comment, Post, PostUser, Tag, User } from "@/types/types";
 
 // 複数の投稿データを生成する関数
 export function generateMockPosts(count: number): Post[] {
@@ -64,8 +65,6 @@ function generateMockPost(): Post {
  * を必ず含む文字列を生成する関数
  */
 function generatePassword(): string {
-  const { randomInt } = require("node:crypto");
-
   // すべての候補文字を明示的に定義(英小文字、英大文字、数字、記号)
   const LOWERCASE: string = "abcdefghijklmnopqrstuvwxyz";
   const UPPERCASE: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
