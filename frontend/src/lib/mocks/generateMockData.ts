@@ -56,6 +56,20 @@ function generateMockPost(): Post {
   };
 }
 
+// FormDataのモックを生成する関数
+export function generateMockForm<T>(values: T): FormData {
+  const formData = new FormData();
+
+  // `values`がオブジェクトでない場合は空の`FormData`を返す。
+  if (!values || typeof values !== "object") return formData;
+
+  for (const [key, value] of Object.entries(values)) {
+    formData.append(key, String(value));
+  }
+
+  return formData;
+}
+
 /**
  * 8〜100文字の範囲で
  * - 小文字1文字以上
