@@ -10,8 +10,9 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: !Rails.e
     origins 'http://localhost'
 
     resource "*",
-      headers: :any,
+      headers: %w(Authorization),
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      expose: %w(Authorization),
       max_age: 600,
       credentials: true
   end
