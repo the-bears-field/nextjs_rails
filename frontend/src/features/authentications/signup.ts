@@ -1,7 +1,7 @@
 "use server";
 
 import { userSchema } from "@/lib/schemas";
-import { SignUpResult } from "@/features/authentications/types/authentications.types";
+import { AuthResult } from "./types/authentications.types";
 import { generateContainerUrl } from "@/lib/generateParsedData";
 
 /**
@@ -9,9 +9,9 @@ import { generateContainerUrl } from "@/lib/generateParsedData";
  * 戻り値の詳細は下記バックエンドの`create`アクションを参照
  * /backend/app/controllers/v1/users/registrations_controller.rb
  * @param { FormData } formData フォームデータ
- * @returns { Promise<SignUpResult> } 新規登録の結果
+ * @returns { Promise<AuthResult> } 新規登録の結果
  */
-export async function signup(formData: FormData): Promise<SignUpResult> {
+export async function signup(formData: FormData): Promise<AuthResult> {
   const parsedFormData = userSchema.safeParse({
     user_id: formData.get("user_id"),
     name: formData.get("name"),
