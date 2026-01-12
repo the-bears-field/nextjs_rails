@@ -3,6 +3,7 @@
 import { userSchema } from "@/lib/schemas";
 import { AuthResult } from "./types/authentications.types";
 import { generateContainerUrl } from "@/lib/generateParsedData";
+import { authSuccessSchema } from "./schemas/authentication";
 
 /**
  * 新規登録を行うアクション
@@ -44,6 +45,7 @@ export async function signup(formData: FormData): Promise<AuthResult> {
     const parsedUrl = generateContainerUrl("/v1/users");
     const response = await fetch(parsedUrl, requestInit);
 
+    // HTTPレスポンスの成功確認
     if (!response.ok) {
       return {
         success: false,
@@ -51,7 +53,18 @@ export async function signup(formData: FormData): Promise<AuthResult> {
       };
     }
 
-    return response.json();
+    // レスポンスのJSONの型を検証
+    const json = await response.json();
+    const parsedJson = authSuccessSchema.safeParse(json);
+
+    if (!parsedJson.success) {
+      return {
+        success: false,
+        errors: parsedJson.error.issues.map((i) => i.message),
+      };
+    }
+
+    return parsedJson.data;
   } catch (error) {
     if (error instanceof Error) {
       return {
