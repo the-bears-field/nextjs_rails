@@ -4,6 +4,7 @@ import { userSchema } from "@/lib/schemas";
 import { AuthResult } from "./types/authentications.types";
 import { generateContainerUrl } from "@/lib/generateParsedData";
 import { authSuccessSchema } from "./schemas/authentication";
+import { cookies } from "next/headers";
 
 /**
  * 新規登録を行うアクション
@@ -53,6 +54,16 @@ export async function signup(formData: FormData): Promise<AuthResult> {
       };
     }
 
+    // Authorizationヘッダーの取得、存在確認
+    const authHeader = response.headers.get("Authorization");
+
+    if (!authHeader) {
+      return {
+        success: false,
+        errors: ["Authorizationヘッダーが存在しません。"],
+      };
+    }
+
     // レスポンスのJSONの型を検証
     const json = await response.json();
     const parsedJson = authSuccessSchema.safeParse(json);
@@ -63,6 +74,16 @@ export async function signup(formData: FormData): Promise<AuthResult> {
         errors: parsedJson.error.issues.map((i) => i.message),
       };
     }
+
+    // BearerトークンをCookieに保存
+    const bearerToken = authHeader.replace("Bearer ", "");
+    const cookieStore = await cookies();
+
+    cookieStore.set("access_token", bearerToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    });
 
     return parsedJson.data;
   } catch (error) {
