@@ -137,3 +137,32 @@ erDiagram
     USERS ||--o{ USER_COMMENTS             : "1対多(1以上)"
     COMMENTS ||--o{ USER_COMMENTS          : "1対多(1以上)"
 ```
+
+## ネットワーク構成
+
+```mermaid
+flowchart LR
+    subgraph Internet
+        User[User]
+    end
+    subgraph "Docker ネットワーク"
+        subgraph PublicNetwork["Public ネットワーク"]
+            Web[Nginx<br/>web]
+            Frontend[Next.js<br/>frontend]
+            Backend[Rails API<br/>backend]
+            PgAdmin[pgAdmin]
+        end
+
+        subgraph PrivateNetwork["Private ネットワーク"]
+            DB[(PostgreSQL<br/>db)]
+            Backend_Privarte[Rails API<br/>backend]
+            PgAdmin_Privarte[pgAdmin]
+        end
+    end
+
+    User --- Web
+    Web --- Frontend & Backend & PgAdmin
+    Backend_Privarte & PgAdmin_Privarte --- DB
+    Backend --- Backend_Privarte
+    PgAdmin --- PgAdmin_Privarte
+```
