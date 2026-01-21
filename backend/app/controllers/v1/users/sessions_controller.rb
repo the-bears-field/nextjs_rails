@@ -4,6 +4,10 @@ class V1::Users::SessionsController < Devise::SessionsController
   before_action :validate_origin, only: [:create, :destroy]
   before_action :configure_sign_in_params, only: [:create]
 
+  # `destroy`アクションでのログイン中のユーザーの存在確認をスキップ。
+  # https://github.com/heartcombo/devise/blob/main/app/controllers/devise/sessions_controller.rb#L61
+  skip_before_action :verify_signed_out_user, only: [:destroy]
+
   respond_to :json
 
   # GET /resource/sign_in
@@ -35,8 +39,18 @@ class V1::Users::SessionsController < Devise::SessionsController
   end
 
   # DELETE /resource/sign_out
+  #
+  # @return [JSON] サインアウト結果のJSONレスポンス
+  #   成功時: { value: { message: String }, success: true }
+  #   失敗時: { errors: [String], success: false }
   def destroy
-    super
+    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+
+    if signed_out
+      render json: { success: true, value: { message: 'ログアウトしました。' } }, status: :ok
+    else
+      render json: { success: false, errors: ['すでにログアウトされています。'] }, status: :unauthorized
+    end
   end
 
   protected

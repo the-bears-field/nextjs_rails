@@ -79,8 +79,8 @@ RSpec.describe "V1::Users::Sessions", type: :request do
           as: :json
       end
 
-      it "ステータスコード204が返されることを確認" do
-        expect(response).to have_http_status(204)
+      it "ステータスコード200が返されることを確認" do
+        expect(response).to have_http_status(200)
       end
 
       it 'Access-Control-Allow-Credentials が`true`であることを確認' do
@@ -100,6 +100,14 @@ RSpec.describe "V1::Users::Sessions", type: :request do
             as: :json
         end
 
+        it "成功フラグが `false` であることを確認" do
+          expect(JSON.parse(response.body)['success']).to be_falsey
+        end
+
+        it "指定したエラーメッセージを返すことを確認" do
+          expect(JSON.parse(response.body)['errors']).to eq(['このオリジンは許可されていません'])
+        end
+
         it "ステータスコード403が返されることを確認" do
           expect(response).to have_http_status(403)
         end
@@ -116,8 +124,16 @@ RSpec.describe "V1::Users::Sessions", type: :request do
             as: :json
         end
 
-        it "ステータスコード204が返されることを確認" do
-          expect(response).to have_http_status(204)
+        it "成功フラグが `false` であることを確認" do
+          expect(JSON.parse(response.body)['success']).to be_falsey
+        end
+
+        it "指定したエラーメッセージを返すことを確認" do
+          expect(JSON.parse(response.body)['errors']).to eq(['すでにログアウトされています。'])
+        end
+
+        it "ステータスコード401が返されることを確認" do
+          expect(response).to have_http_status(401)
         end
 
         it '認証ヘッダーを返さないことを確認' do
