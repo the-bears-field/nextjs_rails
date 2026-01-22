@@ -12,6 +12,22 @@ const nextConfig = {
 
     return config;
   },
+
+  redirects: async () => {
+    return [
+      {
+        source: "/signup",
+        has: [
+          {
+            type: "cookie",
+            key: "access_token",
+          },
+        ],
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
