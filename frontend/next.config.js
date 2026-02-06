@@ -26,6 +26,17 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/signin",
+        has: [
+          {
+            type: "cookie",
+            key: "access_token",
+          },
+        ],
+        destination: "/",
+        permanent: true,
+      },
     ];
   },
 };
