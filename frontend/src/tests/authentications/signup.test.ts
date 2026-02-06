@@ -80,7 +80,7 @@ describe("signup (Server Action)", () => {
         expect(result.value).toEqual(expectedValue);
         expect(result).not.toHaveProperty("errors");
       } else {
-        fail(
+        throw new Error(
           "Result型の`success`がtrueの場合、`errors`プロパティは存在しません。",
         );
       }
@@ -178,8 +178,8 @@ describe("signup (Server Action)", () => {
       if (!result.success) {
         expect(result.errors.length).toBeGreaterThan(0);
       } else {
-        fail(
-          "Result型の`success`がfalseの場合、`value`プロパティは存在しません。",
+        throw new Error(
+          "Result型の`success`がtrueの場合、`errors`プロパティは存在しません。",
         );
       }
     });
