@@ -11,7 +11,7 @@ import type { Post } from "@/types/types";
 export async function fetchPosts(userId: string): Promise<Post[]> {
   const parsedUserId: string = generateUserId(userId);
   const parsedUrl: string = generateContainerUrl(
-    `/v1/users/${parsedUserId}/posts`
+    `/v1/users/${parsedUserId}/posts`,
   );
 
   return await fetchData({ url: parsedUrl, schema: postSchema.array() });
@@ -26,7 +26,7 @@ export async function fetchPost(params: {
   const parsedUserId: string = generateUserId(userId);
   const parsedPostUuid: string = generateUuid(postUuid);
   const parsedUrl: string = generateContainerUrl(
-    `/v1/users/${parsedUserId}/posts/${parsedPostUuid}`
+    `/v1/users/${parsedUserId}/posts/${parsedPostUuid}`,
   );
 
   return await fetchData({ url: parsedUrl, schema: postSchema });
@@ -52,7 +52,7 @@ async function fetchData<T extends z.ZodType>(params: {
   const parsedData = schema.safeParse(json);
 
   if (!parsedData.success) {
-    console.error(parsedData.error.issues);
+    // console.error(parsedData.error.issues);
     throw new Error(`ValidationError: ${parsedData.error.issues}`);
   }
 
