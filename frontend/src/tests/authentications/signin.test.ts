@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
-import { signin } from "@/features/authentications/signin";
-import { authSuccessSchema } from "@/features/authentications/schemas/authentication";
 import { generateContainerUrl } from "@/lib/generateParsedData";
 import { userSchema } from "@/lib/schemas";
+import { signin } from "@/features/authentications/actions/signin";
+import { authSuccessSchema } from "@/features/authentications/schemas/authentication";
 
 // 元の `fetch` を保存
 const originalFetch = global.fetch;
@@ -35,7 +35,7 @@ describe("signin サーバーアクションのテスト", () => {
 
   // デフォルトURL生成処理をモック化
   (generateContainerUrl as jest.Mock).mockReturnValue(
-    "http://localhost/v1/users/signin",
+    "http://localhost/v1/users/sign_in",
   );
 
   beforeEach(() => {
@@ -131,7 +131,7 @@ describe("signin サーバーアクションのテスト", () => {
 
       expect(result).toEqual({
         success: false,
-        errors: ["HTTPエラー: 401: Unauthorized"],
+        errors: ["HTTP 401: Unauthorized"],
       });
     });
 

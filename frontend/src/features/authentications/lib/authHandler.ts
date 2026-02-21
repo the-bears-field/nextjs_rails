@@ -1,33 +1,15 @@
-"use server";
-
-import { userSchema } from "@/lib/schemas";
-import { AuthResult } from "./types/authentications.types";
-import { generateContainerUrl } from "@/lib/generateParsedData";
-import { authSuccessSchema } from "./schemas/authentication";
 import { cookies } from "next/headers";
+import { generateContainerUrl } from "@/lib/generateParsedData";
+import { authSuccessSchema } from "@/features/authentications/schemas/authentication";
+import type { AuthResult } from "@/features/authentications/types/authentications.types";
 
-/**
- * 新規登録を行うアクション
- * 戻り値の詳細は下記バックエンドの`create`アクションを参照
- * /backend/app/controllers/v1/users/registrations_controller.rb
- * @param { FormData } formData フォームデータ
- * @returns { Promise<AuthResult> } 新規登録の結果
- */
-export async function signup(formData: FormData): Promise<AuthResult> {
-  const parsedFormData = userSchema.safeParse({
-    user_id: formData.get("user_id"),
-    name: formData.get("name"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-  });
-
-  if (!parsedFormData.success) {
-    return {
-      success: false,
-      errors: parsedFormData.error.issues.map((i) => i.message),
-    };
-  }
-
+export async function authHandler({
+  path,
+  payload,
+}: {
+  path: string;
+  payload: object;
+}): Promise<AuthResult> {
   try {
     const requestInit: RequestInit = {
       method: "POST",
@@ -38,12 +20,10 @@ export async function signup(formData: FormData): Promise<AuthResult> {
         "Content-Type": "application/json;charset=UTF-8",
         Origin: "http://localhost",
       },
-      body: JSON.stringify({
-        user: parsedFormData.data,
-      }),
+      body: JSON.stringify(payload),
     };
 
-    const parsedUrl = generateContainerUrl("/v1/users");
+    const parsedUrl = generateContainerUrl(path);
     const response = await fetch(parsedUrl, requestInit);
 
     // HTTPレスポンスの成功確認
@@ -85,6 +65,7 @@ export async function signup(formData: FormData): Promise<AuthResult> {
       sameSite: "lax",
     });
 
+    // 検証済みのJSONデータを返す
     return parsedJson.data;
   } catch (error) {
     if (error instanceof Error) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { signup } from "@/features/authentications/signup";
+import { signup } from "@/features/authentications/actions/signup";
 import { JSX } from "react";
 
 export function SignupForm(): JSX.Element {
