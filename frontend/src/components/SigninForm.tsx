@@ -1,6 +1,6 @@
 "use client";
 
-import { signin } from "@/features/authentications/signin";
+import { signin } from "@/features/authentications/actions/signin";
 import { redirect } from "next/navigation";
 import { JSX } from "react";
 

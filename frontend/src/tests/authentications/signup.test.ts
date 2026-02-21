@@ -1,10 +1,10 @@
-import { signup } from "@/features/authentications/signup";
+import { cookies } from "next/headers";
+import { signup } from "@/features/authentications/actions/signup";
 import {
   generateMockForm,
   generateMockUser,
 } from "@/lib/mocks/generateMockData";
-import { User } from "@/types/types";
-import { cookies } from "next/headers";
+import type { User } from "@/types/types";
 
 // `next/headers` をモック化
 jest.mock("next/headers", () => ({
