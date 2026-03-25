@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { generateContainerUrl } from "@/lib/generateParsedData";
 import { authSuccessSchema } from "@/features/authentications/schemas/authentication";
 import type { AuthResult } from "@/features/authentications/types/authentications.types";
+import "server-only";
 
 export async function authHandler({
   path,

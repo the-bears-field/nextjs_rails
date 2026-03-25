@@ -6,6 +6,7 @@ import {
   generateUuid,
 } from "@/lib/generateParsedData";
 import type { Post } from "@/types/types";
+import "server-only";
 
 /** APIサーバーから複数の投稿データを取得 */
 export async function fetchPosts(userId: string): Promise<Post[]> {
