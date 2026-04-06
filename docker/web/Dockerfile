@@ -3,7 +3,8 @@ FROM nginx:1.28.0
 RUN apt-get update -qq && \
     apt-get install -y vim git && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "PS1='\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\u@\H\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $ '" >> /root/.bashrc
+    echo "PS1='\${debian_chroot:+(\$debian_chroot)}\[\033[01;32m\]\u@\H\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $ '" >> /root/.bashrc && \
+    mkdir /tmp/sockets
 
 # Vimの設定ファイルをコピー
 COPY ./.vimrc /root/
