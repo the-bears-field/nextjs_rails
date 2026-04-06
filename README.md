@@ -43,6 +43,36 @@ sh initialization.sh
 
 以上の過程を経てブラウザで[http://localhost](http://localhost)を開くと、ポートフォリオの閲覧が可能となります。
 
+## 既定のユーザー情報
+
+### User1
+
+#### mail
+
+```
+user1@example.com
+```
+
+#### password
+
+```
+Password@1234
+```
+
+### User2
+
+#### mail
+
+```
+user2@example.com
+```
+
+#### password
+
+```
+Password@1234
+```
+
 ## データベース設計
 
 ```mermaid
