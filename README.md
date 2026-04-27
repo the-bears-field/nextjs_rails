@@ -3,17 +3,17 @@
 ## 使用技術
 
 - フロントエンド
-  - Node.js v22.18.0
+  - Node.js v24.15.0
   - react@19.1.1
-  - typescript@5.9.2
+  - typescript@6.0.3
   - next@15.5.2
   - zod@4.1.5
   - tailwindcss@4.1.13
-  - jest@29.4.1
+  - jest@29.7.0
 - バックエンド
-  - Ruby 3.4.5
-  - Rails 8.0.2
-  - RSpec 3.13
+  - Ruby 4.0.2
+  - Rails 8.0.5
+  - RSpec 3.13.6
 - データベース
   - PostgreSQL 17.5
 - Web サーバー
