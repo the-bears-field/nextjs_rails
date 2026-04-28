@@ -23,7 +23,7 @@
       "@/*": ["./src/*"]
     },
     "types": ["node", "jest"],
-    "rootDir": "src/"
+    "rootDir": "./"
   },
   "include": [
     "next-env.d.ts",
