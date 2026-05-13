@@ -88,125 +88,124 @@ RSpec.describe User, type: :model do
         end
       end
     end
-  end
+    describe "新規登録が不可能である" do
+      context "user_id ユーザーID" do
+        it "nilの場合、無効な状態であること" do
+          user.user_id = nil
+          user.valid?
+          expect(user.errors.of_kind?(:user_id, :blank)).to be_truthy
+        end
 
-  describe "新規登録が不可能である" do
-    context "user_id ユーザーID" do
-      it "nilの場合、無効な状態であること" do
-        user.user_id = nil
-        user.valid?
-        expect(user.errors.of_kind?(:user_id, :blank)).to be_truthy
+        it "空文字の場合、無効な状態であること" do
+          user.user_id = ""
+          user.valid?
+          expect(user.errors.of_kind?(:user_id, :blank)).to be_truthy
+        end
+
+        it "定められた書式ではない場合、無効な状態であること" do
+          user.user_id = "!@#$%^&*()-="
+          user.valid?
+          expect(user).to be_invalid
+        end
+
+        it "4文字未満の場合、無効な状態であること" do
+          user.user_id = "x"
+          user.valid?
+          expect(user).to be_invalid
+        end
+
+        it "16文字以上の場合、無効な状態であること" do
+          user.user_id = "__Example12345678__"
+          user.valid?
+          expect(user).to be_invalid
+        end
       end
 
-      it "空文字の場合、無効な状態であること" do
-        user.user_id = ""
-        user.valid?
-        expect(user.errors.of_kind?(:user_id, :blank)).to be_truthy
+      context "name 名前" do
+        it "nilの場合、無効な状態であること" do
+          user.name = nil
+          user.valid?
+          expect(user.errors.of_kind?(:name, :blank)).to be_truthy
+        end
+
+        it "空文字の場合、無効な状態であること" do
+          user.name = ""
+          user.valid?
+          expect(user.errors.of_kind?(:name, :blank)).to be_truthy
+        end
       end
 
-      it "定められた書式ではない場合、無効な状態であること" do
-        user.user_id = "!@#$%^&*()-="
-        user.valid?
-        expect(user).to be_invalid
+      context "email メール" do
+        it "nilの場合、無効な状態であること" do
+          user.email = nil
+          user.valid?
+          expect(user.errors.of_kind?(:email, :blank)).to be_truthy
+        end
+
+        it "空文字の場合、無効な状態であること" do
+          user.email = ""
+          user.valid?
+          expect(user.errors.of_kind?(:email, :blank)).to be_truthy
+        end
+
+        it "メールアドレスの書式ではない場合、無効な状態であること" do
+          user.email = "example"
+          user.valid?
+          expect(user).to be_invalid
+        end
+
+        it "正規表現での定義外の文字列が含まれていた場合、無効な状態であること" do
+          user.email = "<script>alert('test');</script>@example.com"
+          user.valid?
+          expect(user).to be_invalid
+        end
+
+        it "重複したメールアドレスなら無効な状態であること" do
+          FactoryBot.create(:user, email: "aaa@example.com")
+          user.email = "aaa@example.com"
+          user.valid?
+          expect(user.errors.of_kind?(:email, :taken)).to be_truthy
+        end
+
+        it "エイリアスを含むGmailでの登録で、ユーザー名とドメインが一致した場合は無効" do
+          FactoryBot.create(:user, email: "example@gmail.com")
+          user.email = "example+test@gmail.com"
+          user.valid?
+          expect(user.errors.of_kind?(:normalized_email, :taken)).to be_truthy
+        end
+
+        it "Googlemailでの登録で、Gmailに同じユーザー名が登録済だった場合は無効" do
+          FactoryBot.create(:user, email: "example@gmail.com")
+          user.email = "example@googlemail.com"
+          user.valid?
+          expect(user.errors.of_kind?(:normalized_email, :taken)).to be_truthy
+        end
       end
 
-      it "4文字未満の場合、無効な状態であること" do
-        user.user_id = "x"
-        user.valid?
-        expect(user).to be_invalid
-      end
+      context "password パスワード" do
+        it "パスワードが8文字未満の場合は無効" do
+          user.password = "test"
+          user.valid?
+          expect(user.errors.of_kind?(:password, :too_short)).to be_truthy
+        end
 
-      it "16文字以上の場合、無効な状態であること" do
-        user.user_id = "__Example12345678__"
-        user.valid?
-        expect(user).to be_invalid
-      end
-    end
+        it "パスワードに数字が含まれていない場合は無効" do
+          user.password = "TestTest"
+          user.valid?
+          expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
+        end
 
-    context "name 名前" do
-      it "nilの場合、無効な状態であること" do
-        user.name = nil
-        user.valid?
-        expect(user.errors.of_kind?(:name, :blank)).to be_truthy
-      end
+        it "パスワードに半角大文字が含まれていない場合は無効" do
+          user.password = "test1234"
+          user.valid?
+          expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
+        end
 
-      it "空文字の場合、無効な状態であること" do
-        user.name = ""
-        user.valid?
-        expect(user.errors.of_kind?(:name, :blank)).to be_truthy
-      end
-    end
-
-    context "email メール" do
-      it "nilの場合、無効な状態であること" do
-        user.email = nil
-        user.valid?
-        expect(user.errors.of_kind?(:email, :blank)).to be_truthy
-      end
-
-      it "空文字の場合、無効な状態であること" do
-        user.email = ""
-        user.valid?
-        expect(user.errors.of_kind?(:email, :blank)).to be_truthy
-      end
-
-      it "メールアドレスの書式ではない場合、無効な状態であること" do
-        user.email = "example"
-        user.valid?
-        expect(user).to be_invalid
-      end
-
-      it "正規表現での定義外の文字列が含まれていた場合、無効な状態であること" do
-        user.email = "<script>alert('test');</script>@example.com"
-        user.valid?
-        expect(user).to be_invalid
-      end
-
-      it "重複したメールアドレスなら無効な状態であること" do
-        FactoryBot.create(:user, email: "aaa@example.com")
-        user.email = "aaa@example.com"
-        user.valid?
-        expect(user.errors.of_kind?(:email, :taken)).to be_truthy
-      end
-
-      it "エイリアスを含むGmailでの登録で、ユーザー名とドメインが一致した場合は無効" do
-        FactoryBot.create(:user, email: "example@gmail.com")
-        user.email = "example+test@gmail.com"
-        user.valid?
-        expect(user.errors.of_kind?(:normalized_email, :taken)).to be_truthy
-      end
-
-      it "Googlemailでの登録で、Gmailに同じユーザー名が登録済だった場合は無効" do
-        FactoryBot.create(:user, email: "example@gmail.com")
-        user.email = "example@googlemail.com"
-        user.valid?
-        expect(user.errors.of_kind?(:normalized_email, :taken)).to be_truthy
-      end
-    end
-
-    context "password パスワード" do
-      it "パスワードが8文字未満の場合は無効" do
-        user.password = "test"
-        user.valid?
-        expect(user.errors.of_kind?(:password, :too_short)).to be_truthy
-      end
-
-      it "パスワードに数字が含まれていない場合は無効" do
-        user.password = "TestTest"
-        user.valid?
-        expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
-      end
-
-      it "パスワードに半角大文字が含まれていない場合は無効" do
-        user.password = "test1234"
-        user.valid?
-        expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
-      end
-
-      it "パスワードに半角小文字が含まれていない場合は無効" do
-        user.password = "TEST1234"
-        user.valid?
-        expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
+        it "パスワードに半角小文字が含まれていない場合は無効" do
+          user.password = "TEST1234"
+          user.valid?
+          expect(user.errors.of_kind?(:password, :invalid)).to be_truthy
+        end
       end
     end
   end
