@@ -64,19 +64,19 @@ export default function Home() {
             必要要件に記載している環境を整えた上で、ターミナルで下記コマンドを順番に実行してください。
           </p>
           <div className="mt-4">
-            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all">
+            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all overflow-x-auto">
               <code>
                 git clone https://github.com/the-bears-field/nextjs_rails.git
               </code>
             </pre>
           </div>
           <div className="mt-4">
-            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all">
+            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all overflow-x-auto">
               <code>cd nextjs_rails</code>
             </pre>
           </div>
           <div className="mt-4">
-            <pre className="p-4 rounded-2xl bg-gray-600 select-all">
+            <pre className="p-4 rounded-2xl bg-gray-600 dark:bg-gray-600 select-all overflow-x-auto">
               <code>sh initialization.sh</code>
             </pre>
           </div>
@@ -104,13 +104,13 @@ export default function Home() {
           </h3>
           <div className="mt-4 ml-4">
             <h4 className="font-bold">mail</h4>
-            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all">
+            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all overflow-x-auto">
               <code>user1@example.com</code>
             </pre>
           </div>
           <div className="mt-4 ml-4">
             <h4 className="font-bold">password</h4>
-            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all">
+            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all overflow-x-auto">
               <code>Password@1234</code>
             </pre>
           </div>
@@ -123,13 +123,13 @@ export default function Home() {
           </h3>
           <div className="mt-4 ml-4">
             <h4 className="font-bold">mail</h4>
-            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all">
+            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all overflow-x-auto">
               <code>user2@example.com</code>
             </pre>
           </div>
           <div className="mt-4 ml-4">
             <h4 className="font-bold">password</h4>
-            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all">
+            <pre className="p-4 rounded-2xl bg-gray-200 dark:bg-gray-600 select-all overflow-x-auto">
               <code>Password@1234</code>
             </pre>
           </div>
