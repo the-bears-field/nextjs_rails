@@ -24,7 +24,9 @@ export async function authHandler({
       body: JSON.stringify(payload),
     };
 
-    const parsedUrl = generateContainerUrl(path);
+    const generateContainerUrlResult = generateContainerUrl(path);
+    if (!generateContainerUrlResult.success) return generateContainerUrlResult;
+    const parsedUrl = generateContainerUrlResult.value;
     const response = await fetch(parsedUrl, requestInit);
 
     // HTTPレスポンスの成功確認

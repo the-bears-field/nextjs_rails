@@ -5,15 +5,20 @@ import {
   generateUserId,
   generateUuid,
 } from "@/lib/generateParsedData";
-import type { Post } from "@/types/types";
+import type { Result } from "@/types/types";
+import type { FetchPostResult, FetchPostsResult } from "./type/api.type";
 import "server-only";
 
 /** APIサーバーから複数の投稿データを取得 */
-export async function fetchPosts(userId: string): Promise<Post[]> {
-  const parsedUserId: string = generateUserId(userId);
-  const parsedUrl: string = generateContainerUrl(
-    `/v1/users/${parsedUserId}/posts`,
-  );
+export async function fetchPosts(userId: string): Promise<FetchPostsResult> {
+  const userIdResult = generateUserId(userId);
+  if (!userIdResult.success) return userIdResult;
+
+  const parsedUserId: string = userIdResult.value;
+  const urlResult = generateContainerUrl(`/v1/users/${parsedUserId}/posts`);
+  if (!urlResult.success) return urlResult;
+
+  const parsedUrl = urlResult.value;
 
   return await fetchData({ url: parsedUrl, schema: postSchema.array() });
 }
@@ -22,13 +27,22 @@ export async function fetchPosts(userId: string): Promise<Post[]> {
 export async function fetchPost(params: {
   userId: string;
   postUuid: string;
-}): Promise<Post> {
+}): Promise<FetchPostResult> {
   const { userId, postUuid } = params;
-  const parsedUserId: string = generateUserId(userId);
-  const parsedPostUuid: string = generateUuid(postUuid);
-  const parsedUrl: string = generateContainerUrl(
+  const userIdResult = generateUserId(userId);
+  if (!userIdResult.success) return userIdResult;
+
+  const parsedUserId: string = userIdResult.value;
+  const postUuidResult = generateUuid(postUuid);
+  if (!postUuidResult.success) return postUuidResult;
+
+  const parsedPostUuid: string = postUuidResult.value;
+  const urlResult = generateContainerUrl(
     `/v1/users/${parsedUserId}/posts/${parsedPostUuid}`,
   );
+  if (!urlResult.success) return urlResult;
+
+  const parsedUrl: string = urlResult.value;
 
   return await fetchData({ url: parsedUrl, schema: postSchema });
 }
@@ -37,7 +51,7 @@ export async function fetchPost(params: {
 async function fetchData<T extends z.ZodType>(params: {
   schema: T;
   url: string;
-}): Promise<z.infer<T>> {
+}): Promise<Result<z.infer<T>, string[]>> {
   const { url, schema } = params;
   const response: Response = await fetch(url, {
     method: "GET",
@@ -45,17 +59,29 @@ async function fetchData<T extends z.ZodType>(params: {
     cache: "no-store",
   });
 
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  try {
+    if (!response.ok) {
+      return {
+        success: false,
+        errors: [`HTTP ${response.status}: ${response.statusText}`],
+      };
+    }
+
+    const json = await response.json();
+    const parsedData = schema.safeParse(json);
+
+    if (!parsedData.success) {
+      return {
+        success: false,
+        errors: parsedData.error.issues.map((i) => i.message),
+      };
+    }
+
+    return { success: true, value: parsedData.data };
+  } catch (error) {
+    return {
+      success: false,
+      errors: [error instanceof Error ? error.message : String(error)],
+    };
   }
-
-  const json = await response.json();
-  const parsedData = schema.safeParse(json);
-
-  if (!parsedData.success) {
-    // console.error(parsedData.error.issues);
-    throw new Error(`ValidationError: ${parsedData.error.issues}`);
-  }
-
-  return parsedData.data;
 }

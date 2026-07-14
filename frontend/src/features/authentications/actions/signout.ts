@@ -16,7 +16,11 @@ export async function signout(): Promise<void> {
   try {
     // バックエンドへサインアウトのリクエストを送信
     if (token) {
-      const apiUrl = generateContainerUrl("/v1/users/sign_out");
+      const generateContainerUrlResult =
+        generateContainerUrl("/v1/users/sign_out");
+      if (!generateContainerUrlResult.success)
+        throw new Error("URLの生成に失敗");
+      const apiUrl = generateContainerUrlResult.value;
 
       // タイムアウト付きのfetch、またはエラーを許容する設計
       await fetch(apiUrl, {

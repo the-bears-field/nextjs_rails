@@ -34,9 +34,10 @@ describe("signin サーバーアクションのテスト", () => {
   (cookies as jest.Mock).mockReturnValue(mockCookieStore);
 
   // デフォルトURL生成処理をモック化
-  (generateContainerUrl as jest.Mock).mockReturnValue(
-    "http://localhost/v1/users/sign_in",
-  );
+  (generateContainerUrl as jest.Mock).mockReturnValue({
+    success: true,
+    value: "http://localhost/v1/users/sign_in",
+  });
 
   beforeEach(() => {
     // すべてのモックをクリア

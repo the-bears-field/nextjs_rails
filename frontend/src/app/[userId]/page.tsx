@@ -1,6 +1,6 @@
-import { fetchPosts } from "@/features/api/fetchData";
-import { Post } from "@/types/types";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { fetchPosts } from "@/features/api/fetchData";
 
 export default async function Page({
   params,
@@ -8,11 +8,14 @@ export default async function Page({
   params: Promise<{ userId: string }>;
 }) {
   const { userId } = await params;
-  const postsData: Post[] = await fetchPosts(userId);
+  const result = await fetchPosts(userId);
+  if (!result.success) return notFound();
+
+  const postsdata = result.value;
 
   return (
     <section className="max-w-full">
-      {postsData.map((post, key) => (
+      {postsdata.map((post, key) => (
         <article key={key} className="not-first:mt-32">
           <h2 className="text-3xl">
             <Link

@@ -5,7 +5,10 @@ import { signout } from "@/features/authentications/actions/signout";
 
 // 定数の定義
 const AUTH_COOKIE_NAME = "access_token";
-const SIGNOUT_API_URL = generateContainerUrl("/v1/users/sign_out");
+const generateContainerUrlResult = generateContainerUrl("/v1/users/sign_out");
+if (!generateContainerUrlResult.success) throw new Error("URL生成に失敗");
+
+const SIGNOUT_API_URL = generateContainerUrlResult.value;
 
 // Next.js 内部関数の堅牢なモック化
 jest.mock("next/headers", () => ({

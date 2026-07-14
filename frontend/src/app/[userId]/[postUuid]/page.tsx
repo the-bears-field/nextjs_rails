@@ -1,6 +1,7 @@
-import { fetchPost } from "@/features/api/fetchData";
-import { Post } from "@/types/types";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { fetchPost } from "@/features/api/fetchData";
+import type { Post } from "@/types/types";
 
 export default async function Page({
   params,
@@ -8,10 +9,14 @@ export default async function Page({
   params: Promise<{ userId: string; postUuid: string }>;
 }) {
   const { userId, postUuid } = await params;
-  const postData: Post = await fetchPost({
+  const result = await fetchPost({
     userId: userId,
     postUuid: postUuid,
   });
+
+  if (!result.success) return notFound();
+
+  const postData: Post = result.value;
 
   return (
     <section className="max-w-full">

@@ -26,8 +26,11 @@ describe("fetchPosts", () => {
     });
 
     const result = await fetchPosts("user_1");
-    expect(result).toEqual(mockData);
-    expect(postSchema.array().safeParse(result).success).toBeTruthy();
+
+    if (!result.success) throw new Error("fetchPosts failed");
+
+    expect(result.value).toEqual(mockData);
+    expect(postSchema.array().safeParse(result.value).success).toBeTruthy();
   });
 
   it("不正なデータではエラーを返す", async () => {
@@ -41,6 +44,6 @@ describe("fetchPosts", () => {
       json: async () => invalidData,
     });
 
-    await expect(fetchPosts("user_1")).rejects.toThrow();
+    await expect((await fetchPosts("user_1")).success).toBeFalsy;
   });
 });
