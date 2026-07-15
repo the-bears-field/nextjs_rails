@@ -1,14 +1,10 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { generateContainerUrl } from "@/lib/generateParsedData";
 import { signout } from "@/features/authentications/actions/signout";
 
 // 定数の定義
 const AUTH_COOKIE_NAME = "access_token";
-const generateContainerUrlResult = generateContainerUrl("/v1/users/sign_out");
-if (!generateContainerUrlResult.success) throw new Error("URL生成に失敗");
-
-const SIGNOUT_API_URL = generateContainerUrlResult.value;
+const SIGNOUT_API_URL = "http://web/v1/users/sign_out";
 
 // Next.js 内部関数の堅牢なモック化
 jest.mock("next/headers", () => ({
