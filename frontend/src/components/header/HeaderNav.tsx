@@ -1,7 +1,7 @@
 import { JSX } from "react";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { SignoutForm } from "@/components/SignoutForm";
+import { SignoutForm } from "@/components/authentications/SignoutForm";
 
 export async function HeaderNav(): Promise<JSX.Element> {
   const cookieStore = await cookies();
