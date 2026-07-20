@@ -2,6 +2,7 @@
 
 import { signup } from "@/features/authentications/actions/signup";
 import { JSX } from "react";
+import { AuthenticationForm } from "./AuthenticationForm";
 
 export function SignupForm(): JSX.Element {
   async function signupUser(formData: FormData) {
@@ -18,92 +19,23 @@ export function SignupForm(): JSX.Element {
     }
   }
 
+  const formValues = {
+    action: signupUser,
+    inputFields: [
+      { name: "user_id", type: "text", label: "User ID" },
+      { name: "name", type: "text", label: "User Name" },
+      { name: "email", type: "email", label: "Email" },
+      { name: "password", type: "password", label: "Password" },
+    ],
+    buttonText: "登録",
+  };
+
   return (
-    <form
-      action={signupUser}
-      className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full"
-    >
+    <div className="dark:bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
       <h1 className="text-2xl font-bold text-center mb-6 text-gray-700">
         ユーザー登録
       </h1>
-
-      {/* User ID Input */}
-      <div className="mb-4">
-        <label
-          htmlFor="user_id"
-          className="block text-gray-700 text-sm font-bold mb-2"
-        >
-          User ID
-        </label>
-        <input
-          type="text"
-          id="user_id"
-          name="user_id"
-          required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500 text-gray-700"
-        />
-      </div>
-
-      {/* User ID Input */}
-      <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="block text-gray-700 text-sm font-bold mb-2"
-        >
-          User Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500 text-gray-700"
-        />
-      </div>
-
-      {/* Email Input */}
-      <div className="mb-4">
-        <label
-          htmlFor="email"
-          className="block text-gray-700 text-sm font-bold mb-2"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500 text-gray-700"
-        />
-      </div>
-
-      {/* Password Input */}
-      <div className="mb-4 relative">
-        <label
-          htmlFor="password"
-          className="block text-gray-700 text-sm font-bold mb-2"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500 text-gray-700"
-        />
-      </div>
-
-      {/* Submit Button */}
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
-        >
-          登録
-        </button>
-      </div>
-    </form>
+      <AuthenticationForm {...formValues} />;
+    </div>
   );
 }
