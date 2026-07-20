@@ -1,11 +1,11 @@
-"use client";
-
 import { signup } from "@/features/authentications/actions/signup";
 import { JSX } from "react";
 import { AuthenticationForm } from "./AuthenticationForm";
+import "server-only";
 
 export function SignupForm(): JSX.Element {
   async function signupUser(formData: FormData) {
+    "use server";
     const result = await signup(formData);
 
     if (result.success) {

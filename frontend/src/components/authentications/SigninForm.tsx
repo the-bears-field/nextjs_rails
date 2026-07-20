@@ -1,12 +1,12 @@
-"use client";
-
 import { signin } from "@/features/authentications/actions/signin";
 import { redirect } from "next/navigation";
 import { JSX } from "react";
 import { AuthenticationForm } from "./AuthenticationForm";
+import "server-only";
 
 export function SigninForm(): JSX.Element {
   async function signinUser(formData: FormData) {
+    "use server";
     const result = await signin(formData);
 
     if (result.success) {
