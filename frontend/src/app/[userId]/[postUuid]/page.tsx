@@ -19,7 +19,7 @@ export default async function Page({
   const postData: Post = result.value;
 
   return (
-    <section className="max-w-full">
+    <section className="ml-32 my-32 max-w-full">
       <article>
         <h2 className="text-3xl">{postData.title}</h2>
         <p className="mt-4">{postData.description}</p>
