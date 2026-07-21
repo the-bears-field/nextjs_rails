@@ -3,7 +3,7 @@ import { PreformattedCode } from "@/components/common/PreformattedCode";
 
 export default function Home() {
   return (
-    <section className="mx-auto my-32 max-w-max">
+    <section className="mx-auto mt-32 mb-48 max-w-max">
       <h1 className="text-4xl font-bold">
         <Link
           href="https://github.com/the-bears-field/nextjs_rails"

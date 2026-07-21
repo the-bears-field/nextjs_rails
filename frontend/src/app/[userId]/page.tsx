@@ -14,7 +14,7 @@ export default async function Page({
   const postsdata = result.value;
 
   return (
-    <section className="ml-32 my-32 max-w-full">
+    <section className="ml-32 mt-32 mb-48 max-w-full">
       {postsdata.map((post, key) => (
         <article key={key} className="not-first:mt-32">
           <h2 className="text-3xl">
