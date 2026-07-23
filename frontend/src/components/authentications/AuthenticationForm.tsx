@@ -2,12 +2,21 @@ import { JSX } from "react";
 
 type AuthenticationFormType = {
   action: (formData: FormData) => Promise<void>;
-  inputFields: { name: string; type: string; label: string }[];
+  inputFields: { name: string; label: string }[];
   buttonText: string;
 };
 
+type InputType = "text" | "password" | "email";
+
 export function AuthenticationForm(props: AuthenticationFormType): JSX.Element {
   const { action, inputFields, buttonText } = props;
+
+  // nameの値に応じてinputのtype属性の値を返す関数
+  function fetchInputType(name: string): InputType {
+    if (name.includes("password")) return "password";
+    if (name.includes("email")) return "email";
+    return "text";
+  }
 
   return (
     <form action={action}>
@@ -21,7 +30,7 @@ export function AuthenticationForm(props: AuthenticationFormType): JSX.Element {
             {field.label}
           </label>
           <input
-            type={field.type}
+            type={fetchInputType(field.name)}
             id={field.name}
             name={field.name}
             required

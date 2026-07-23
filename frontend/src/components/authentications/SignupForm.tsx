@@ -22,10 +22,10 @@ export function SignupForm(): JSX.Element {
   const formValues = {
     action: signupUser,
     inputFields: [
-      { name: "user_id", type: "text", label: "User ID" },
-      { name: "name", type: "text", label: "User Name" },
-      { name: "email", type: "email", label: "Email" },
-      { name: "password", type: "password", label: "Password" },
+      { name: "user_id", label: "User ID" },
+      { name: "name", label: "User Name" },
+      { name: "email", label: "Email" },
+      { name: "password", label: "Password" },
     ],
     buttonText: "登録",
   };

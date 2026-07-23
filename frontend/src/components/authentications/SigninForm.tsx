@@ -21,8 +21,8 @@ export function SigninForm(): JSX.Element {
   const formValues = {
     action: signinUser,
     inputFields: [
-      { name: "email", type: "email", label: "Email" },
-      { name: "password", type: "password", label: "Password" },
+      { name: "email", label: "Email" },
+      { name: "password", label: "Password" },
     ],
     buttonText: "サインイン",
   };
