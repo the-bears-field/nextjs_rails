@@ -6,13 +6,13 @@ import type { Result } from "@/types/types";
 function generateParsedData<T extends z.ZodType>(params: {
   schema: T;
   data: unknown;
-}): Result<z.infer<T>, string[]> {
+}): Result<z.infer<T>, { value: string }> {
   const { schema, data } = params;
   const parsedData = schema.safeParse(data);
   if (!parsedData.success)
     return {
       success: false,
-      errors: parsedData.error.issues.map((i) => i.message),
+      errors: { value: parsedData.error.issues.map((i) => i.message).join(", ") },
     };
   return { success: true, value: parsedData.data };
 }
@@ -21,7 +21,7 @@ function generateParsedData<T extends z.ZodType>(params: {
 function generateUrl(params: {
   origin: string;
   path: string;
-}): Result<string, string[]> {
+}): Result<string, { value: string }> {
   const { origin, path } = params;
   const url = `${origin}${path}`;
   const parsed = generateParsedData({ schema: urlSchema, data: url });
@@ -31,13 +31,13 @@ function generateUrl(params: {
 }
 
 /** Dockerのコンテナ用のURLを検証、生成する関数 */
-export function generateContainerUrl(path: string): Result<string, string[]> {
+export function generateContainerUrl(path: string): Result<string, { value: string }> {
   const origin: string = "http://web";
   return generateUrl({ origin: origin, path: path });
 }
 
 /** ユーザーIdを検証、生成する関数 */
-export function generateUserId(userId: string): Result<string, string[]> {
+export function generateUserId(userId: string): Result<string, { value: string }> {
   const parsed = generateParsedData({ schema: userIdSchema, data: userId });
   if (!parsed.success) return parsed;
 
@@ -45,7 +45,7 @@ export function generateUserId(userId: string): Result<string, string[]> {
 }
 
 /** UUIDを検証、生成する関数 */
-export function generateUuid(uuid: string): Result<string, string[]> {
+export function generateUuid(uuid: string): Result<string, { value: string }> {
   const parsed = generateParsedData({ schema: uuidSchema, data: uuid });
   if (!parsed.success) return parsed;
 

@@ -22,7 +22,7 @@ export async function signup(formData: FormData): Promise<AuthResult> {
   if (!parsedFormData.success) {
     return {
       success: false,
-      errors: parsedFormData.error.issues.map((i) => i.message),
+      errors: { value: parsedFormData.error.issues.map((i) => i.message).join(", ") },
     };
   }
 

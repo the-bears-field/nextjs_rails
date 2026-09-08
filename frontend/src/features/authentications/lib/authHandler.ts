@@ -33,7 +33,7 @@ export async function authHandler({
     if (!response.ok) {
       return {
         success: false,
-        errors: [`HTTP ${response.status}: ${response.statusText}`],
+        errors: { value: `HTTP ${response.status}: ${response.statusText}` },
       };
     }
 
@@ -43,7 +43,7 @@ export async function authHandler({
     if (!authHeader) {
       return {
         success: false,
-        errors: ["Authorizationヘッダーが存在しません。"],
+        errors: { value: "Authorizationヘッダーが存在しません。" },
       };
     }
 
@@ -54,7 +54,7 @@ export async function authHandler({
     if (!parsedJson.success) {
       return {
         success: false,
-        errors: parsedJson.error.issues.map((i) => i.message),
+        errors: { value: parsedJson.error.issues.map((i) => i.message).join(", ") },
       };
     }
 
@@ -74,7 +74,7 @@ export async function authHandler({
     if (error instanceof Error) {
       return {
         success: false,
-        errors: [`${error.name}: ${error.message}`],
+        errors: { value: `${error.name}: ${error.message}` },
       };
     }
     // Error型ではなかった際、Promiseの可能性を考慮し再度 throw する
