@@ -141,7 +141,7 @@ export function SignupForm(): JSX.Element {
             />
             <div className="mt-2 ml-2 h-8">
               {state.errors.validation?.[field.name]?.map((error, key) => (
-                <p id={`${field.name}-errors-${key}`} className="text-red-500 text-sm">
+                <p id={`${field.name}-errors-${key}`} className="text-red-500 text-sm" key={key}>
                   {error}
                 </p>
               ))}
