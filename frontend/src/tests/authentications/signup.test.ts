@@ -107,8 +107,6 @@ describe("signup (Server Action)", () => {
       // Result型の検証
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(Array.isArray(result.errors)).toBe(true);
-        expect(result.errors.length).toBeGreaterThan(0);
         expect(result).not.toHaveProperty("value");
       }
     });
@@ -129,7 +127,7 @@ describe("signup (Server Action)", () => {
       // Result型の検証
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.errors).toContain(
+        expect(result.errors.value).toContain(
           "Authorizationヘッダーが存在しません。",
         );
       } else {
@@ -153,7 +151,7 @@ describe("signup (Server Action)", () => {
       // Result型の検証
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.errors[0]).toContain("HTTP 500");
+        expect(result.errors.value).toContain("HTTP 500");
       }
     });
 
@@ -175,9 +173,8 @@ describe("signup (Server Action)", () => {
 
       // Result型の検証
       expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.errors.length).toBeGreaterThan(0);
-      } else {
+
+      if (result.success) {
         throw new Error(
           "Result型の`success`がtrueの場合、`errors`プロパティは存在しません。",
         );

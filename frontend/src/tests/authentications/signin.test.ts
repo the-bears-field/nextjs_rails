@@ -110,7 +110,7 @@ describe("signin サーバーアクションのテスト", () => {
 
       expect(result).toEqual({
         success: false,
-        errors: ["無効なメールアドレスです"],
+        errors: { value: "無効なメールアドレスです"},
       });
       expect(global.fetch).not.toHaveBeenCalled();
     });
@@ -132,7 +132,7 @@ describe("signin サーバーアクションのテスト", () => {
 
       expect(result).toEqual({
         success: false,
-        errors: ["HTTP 401: Unauthorized"],
+        errors: { value: "HTTP 401: Unauthorized" },
       });
     });
 
@@ -154,9 +154,9 @@ describe("signin サーバーアクションのテスト", () => {
 
       expect(result.success).toBe(false);
 
-      if (result.success === false) {
-        expect(result.errors).toContain(
-          "Authorizationヘッダーが存在しません。",
+      if (!result.success) {
+        expect(result.errors.value).toContain(
+          "Authorizationヘッダーが存在しません。"
         );
       } else {
         // success が true だった場合にテストを失敗させる（堅牢性の向上）
